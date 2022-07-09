@@ -1,0 +1,49 @@
+# directories
+.vs/
+.vscode/
+examples/
+build/
+tests/bin-tests/
+dory/
+
+# xcode files
+*.xcodeproj
+
+# visual studio files
+*.user
+*.filters
+*.vcxproj
+*.sln
+
+# other files
+.DS_STORE
+
+# compiled objects
+*.o
+*.obj
+*.slo
+*.lo
+
+# compiled static libaries
+*.a
+*.lib
+*.la
+*.lai
+
+# executables
+*.exe
+*.out
+
+# cmake files
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+.env.cmake
