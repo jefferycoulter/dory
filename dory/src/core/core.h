@@ -2,6 +2,7 @@
 #define DORY_CORE_INCL
 
 #include "logger.h"
+#include <string>
 
 namespace DORY
 {
@@ -17,7 +18,7 @@ namespace DORY
         #define DPLATFORM_LINUX 1
     #elif defined(__unix__)
         // just in case the above doesn't catch it
-        #define KPLATFORM_UNIX 1
+        #define DPLATFORM_UNIX 1
     #elif defined(__APPLE__)
         // macOS
         #define DPLATFORM_APPLE 1
@@ -65,7 +66,7 @@ namespace DORY
          * @param file the path and name of the code file containing the failure
          * @param line the line number in the file where the failure occurred
          */
-        void assertion_failure(const char* expression, const char* message, const char* file, signed int line);
+        void assertion_failure(const std::string& expression, const std::string& message, const std::string& file, signed int line);
 
         /**
          * @brief asserts the provided expression to be true, and logs a failure if not. then triggers

@@ -51,7 +51,7 @@ namespace DORY
      * @param args variadic arguments to the log message
      */
     template<typename ... Args>
-    static void log(const char* color, const char* priority_name, const char* msg, Args... args)
+    static void log(const std::string& color, const std::string& priority_name, const std::string& msg, Args... args)
     {   
         time_t t = time(0);
         struct tm buffer;
