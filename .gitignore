@@ -4,6 +4,7 @@
 examples/
 build/
 sandbox/bin
+tests/bin
 
 # xcode files
 *.xcodeproj

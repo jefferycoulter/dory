@@ -1,7 +1,7 @@
 project(tlog)
 
 # set the output directory
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/logger)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/bin)
 
 # specify source and header files
 file(GLOB TLOG_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
