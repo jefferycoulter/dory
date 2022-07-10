@@ -1,7 +1,7 @@
 #ifndef DORY_LOGGER_INCL
 #define DORY_LOGGER_INCL
 
-#include "defines.h"
+#include "core.h"
 #include <string>
 #include <iostream>
 
@@ -58,6 +58,7 @@ namespace DORY
         char time_str[26];
         asctime_r(localtime_r(&t, &buffer), time_str);
 
+        // https://stackoverflow.com/questions/27375089/what-is-the-easiest-way-to-print-a-variadic-parameter-pack-using-stdostream
         std::cout << color << priority_name << " " << color << time_str << " " << msg;
         ((std::cout << "\n\t" << std::forward<Args>(args)), ...);
         std::cout << "\n";

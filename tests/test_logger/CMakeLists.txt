@@ -1,4 +1,4 @@
-project(tlog)
+project(test_logger)
 
 # set the output directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/bin)

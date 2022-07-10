@@ -1,4 +1,4 @@
-project(twindow)
+project(test_window)
 
 # set the output directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/bin)
