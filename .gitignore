@@ -3,8 +3,7 @@
 .vscode/
 examples/
 build/
-tests/bin-tests/
-dory/
+sandbox/bin
 
 # xcode files
 *.xcodeproj
