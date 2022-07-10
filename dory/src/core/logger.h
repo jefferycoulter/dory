@@ -44,7 +44,6 @@ namespace DORY
 
     /**
      * @brief log a message to the console. this is used in the macros defined below
-     * 
      * @tparam Args the types of the variadic arguments to the log message
      * @param color the color of the text to be printed
      * @param priority_name the name of the log priority, e.g. "FATAL", "ERROR", "WARN", etc.

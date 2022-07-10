@@ -7,3 +7,4 @@ target_sources(${PROJECT_NAME} PRIVATE ${DORY_SRCS})
 target_sources(${PROJECT_NAME} PUBLIC ${DORY_HDRS})
 
 add_subdirectory(core)
+add_subdirectory(platform)

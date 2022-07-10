@@ -4,7 +4,7 @@
 int main()
 {
     int var1 = 1;
-    char* var2 = "string";
+    char var2[] = "string";
     DORY::DTRACE("This is a trace message.", var1, var2);
     DORY::DDEBUG("This is a debug message.", var1, var2);
     DORY::DINFO("This is a info message.", var1, var2);

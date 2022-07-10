@@ -17,7 +17,7 @@ fi
 cd $DIR/../build
 
 # run cmake
-cmake -S $DIR/.. -B $DIR/../build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles"
+cmake -S $DIR/.. -B $DIR/../build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug "-GUnix Makefiles"
 
 # run make
 cd $DIR/../build; VERBOSE=1 make
