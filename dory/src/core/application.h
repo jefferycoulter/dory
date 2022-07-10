@@ -1,8 +1,8 @@
 #ifndef DORY_APPLICATION_INCL
 #define DORY_APPLICATION_INCL
 
-#include "nocopy.h"
 #include "platform/window.h"
+#include "utils/nocopy.h"
 
 namespace DORY
 {

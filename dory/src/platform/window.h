@@ -1,7 +1,7 @@
 #ifndef DORY_WINDOW_INCL
 #define DORY_WINDOW_INCL
 
-#include "nocopy.h"
+#include "utils/nocopy.h"
 
 #define GLFW_INCLUDE_VULKAN
 #define VK_ENABLE_BETA_EXTENSIONS

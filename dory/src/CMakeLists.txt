@@ -1,10 +1,5 @@
-# specify source and header files
-file(GLOB DORY_SRCS *.cpp)
-file(GLOB DORY_HDRS *.h)
-
-# add the files to the target
-target_sources(${PROJECT_NAME} PRIVATE ${DORY_SRCS})
-target_sources(${PROJECT_NAME} PUBLIC ${DORY_HDRS})
-
+# add subdirectory with code
 add_subdirectory(core)
 add_subdirectory(platform)
+add_subdirectory(renderer)
+add_subdirectory(utils)

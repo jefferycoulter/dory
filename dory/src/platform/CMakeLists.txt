@@ -1,6 +1,11 @@
 # specify source and header files
-file(GLOB PLATFORM_SRCS *.cpp)
-file(GLOB PLATFORM_HDRS *.h)
+set(PLATFORM_SRCS
+    window.cpp
+)
+
+set(PLATFORM_HDRS 
+    window.h
+)
 
 # add the files to the target
 target_sources(${PROJECT_NAME} PRIVATE ${PLATFORM_SRCS})

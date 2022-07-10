@@ -1,6 +1,14 @@
 # specify source and header files
-file(GLOB CORE_SRCS *.cpp)
-file(GLOB CORE_HDRS *.h)
+set(CORE_SRCS
+    application.cpp
+    logger.cpp
+)
+set(CORE_HDRS
+    application.h
+    core.h
+    entry.h
+    logger.h
+)
 
 # add the files to the target
 target_sources(${PROJECT_NAME} PRIVATE ${CORE_SRCS})
