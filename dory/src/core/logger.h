@@ -3,7 +3,9 @@
 
 #include "core.h"
 #include <string>
+#include <sstream>
 #include <iostream>
+#include <stdio.h>
 
 #define __STDC_WANT_LIB_EXT1__ 1 // needed for localtime_s
 
@@ -51,17 +53,23 @@ namespace DORY
      * @param args variadic arguments to the log message
      */
     template<typename ... Args>
-    static void log(const std::string& color, const std::string& priority_name, const std::string& msg, Args... args)
+    static void log(const char* color, const char* priority_name, const char* msg, Args... args)
     {   
         time_t t = time(0);
         struct tm buffer;
         char time_str[26];
         asctime_r(localtime_r(&t, &buffer), time_str);
 
+        printf("%s%s%s", color, priority_name, time_str);
+        //printf("%s", color);
+        printf(msg, args...);
+        printf("\n");
+
         // https://stackoverflow.com/questions/27375089/what-is-the-easiest-way-to-print-a-variadic-parameter-pack-using-stdostream
-        std::cout << color << priority_name << " " << color << time_str << " " << msg;
-        ((std::cout << "\n\t" << std::forward<Args>(args)), ...);
-        std::cout << "\n";
+        //std::stringstream ss;
+        //((ss << std::forward<Args>(args)), ...);
+        //std::cout << color << priority_name << " " << color << time_str << " " << msg << ss.str() << "\n";
+        //std::cout << "\n";
     }
 
     #define DFATAL(msg, ...) log(COLOR_FATAL, "[FATAL]\x1b[0m \t", msg, ##__VA_ARGS__)

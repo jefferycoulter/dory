@@ -1,4 +1,5 @@
 #include "window.h"
+#include "core/logger.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -24,6 +25,8 @@ namespace DORY
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // resizing will be handled differently with vulkan
 
         m_window = glfwCreateWindow(m_width, m_height, m_title, NULL, NULL);
+
+        DINFO("Window created. Width: %d, Height: %d, Title: %s", m_width, m_height, m_title);
     }
 
     bool Window::ShouldClose()
