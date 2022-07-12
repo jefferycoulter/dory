@@ -11,7 +11,7 @@ namespace DORY
         // windows OS
         #define DPLATFORM_WINDOWS 1
         #ifndef _WIN64
-            #error "64-bit is required on Windows!"
+            #error "64-bit is required on Windows."
         #endif
     #elif defined(__linux__) || defined(__gnu_linux__)
         // linux OS
@@ -24,7 +24,7 @@ namespace DORY
         #define DPLATFORM_APPLE 1
         #include <TargetConditionals.h>
     #else
-        #error "Unknown platform!"
+        #error "Unknown platform."
     #endif
 
     // assertions
@@ -33,29 +33,21 @@ namespace DORY
     #ifdef DASSERTIONS_ENABLED
         #if defined(_MSC_VER) // windows OS
         #include <intrin.h>
-            /** 
-             * @brief causes a debug breakpoint to be hit
-             */
+            // causes a debug breakpoint to be hit
             #define debug_break() __debugbreak()
         #elif defined(__APPLE__) // macOS
             // https://stackoverflow.com/questions/44140778/resumable-assert-breakpoint-on-ios-like-debugbreak-with-ms-compiler
             #if defined(__x86_64__) // intel
-                /** 
-                 * @brief causes a debug breakpoint to be hit
-                 */
+                // causes a debug breakpoint to be hit
                 #define debug_break() __asm__("int $3")
             #elif defined(__arm64__) // arm64 mac
-                /** 
-                 * @brief causes a debug breakpoint to be hit
-                 */
+                // causes a debug breakpoint to be hit
                 #define debug_break() __asm__("brk #0")
             #else
                 #error "Unsupported architecture"
             #endif
         #else // linux OS
-            /** 
-             * @brief causes a debug breakpoint to be hit
-             */
+            // causes a debug breakpoint to be hit
             #define debug_break() __builtin_trap()
         #endif
 
