@@ -2,6 +2,8 @@
 #define DORY_APPLICATION_INCL
 
 #include "platform/window.h"
+#include "renderer/device.h"
+#include "renderer/pipeline.h"
 #include "utils/nocopy.h"
 
 namespace DORY
@@ -44,6 +46,16 @@ namespace DORY
              * @brief window object containing the application 
              */
             Window m_window{WIDTH, HEIGHT, "Dory"};
+
+            /**
+             * @brief device running the application
+             */
+            Device _device{_window};
+
+            /**
+             * @brief the application's graphics pipeline
+             */
+            Pipeline _pipeline{_device, Pipeline::DefaultConfig(WIDTH, HEIGHT), "shaders/shader.vert.spv", "shaders/shader.frag.spv"};
 
     }; // class Application
 

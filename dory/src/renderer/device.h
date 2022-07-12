@@ -276,8 +276,8 @@ namespace DORY
              * @brief specify required device extensions.
              * VK_KHR_SWAPCHAIN_EXTENSION_NAME is required to ensure swapchain use is supported.
              */
-            const std::vector<const char *> _device_extensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
-    };
+             const std::vector<const char *> _device_extensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME, VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME};
+    }; // class Device
 
 } // namepsace DORY
 

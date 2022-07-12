@@ -94,6 +94,7 @@ namespace DORY {
 
         VkInstanceCreateInfo create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+        create_info.flags = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
         create_info.pApplicationInfo = &app_info;
 
         auto extensions = GetRequiredExtensions();
@@ -175,7 +176,7 @@ namespace DORY {
         device_features.samplerAnisotropy = VK_TRUE;
 
         VkDeviceCreateInfo create_info = {};
-        create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 
         create_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());
         create_info.pQueueCreateInfos = queue_create_infos.data();
@@ -311,6 +312,9 @@ namespace DORY {
             extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
         }
 
+        extensions.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
+        extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+        
         return extensions;
     }
 
@@ -381,9 +385,9 @@ namespace DORY {
                 indices._graphics_family_has_value = true;
             }
 
-            VkBool32 presentSupport = false;
-            vkGetPhysicalDeviceSurfaceSupportKHR(device, i, _surface, &presentSupport);
-            if (queue_family.queueCount > 0 && presentSupport)
+            VkBool32 present_support = false;
+            vkGetPhysicalDeviceSurfaceSupportKHR(device, i, _surface, &present_support);
+            if (queue_family.queueCount > 0 && present_support)
             {
                 indices._present_family = i;
                 indices._present_family_has_value = true;
