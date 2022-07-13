@@ -27,7 +27,6 @@ namespace DORY
             // BeginFrame() returns nullptr if the swap chain is not ready (i.e. the window is being resized, etc.)
             if (auto command_buffer = m_renderer.BeginFrame())
             {
-                m_renderer.BeginFrame();
                 m_renderer.BeginSwapChainRenderPass(command_buffer);
                 LoadModels();
                 m_renderer.EndSwapChainRenderPass(command_buffer);
