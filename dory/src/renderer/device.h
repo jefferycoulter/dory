@@ -2,6 +2,7 @@
 #define DORY_DEVICE_INCL
 
 #include "platform/window.h"
+#include "utils/nocopy.h"
 
 #include <vector>
 #include <string>
@@ -11,7 +12,8 @@ namespace DORY
     /**
      * @brief struct containing info about swap chain supported capabilities, formats, and present modes
      */
-    struct SwapChainSupportDetails {
+    struct SwapChainSupportDetails
+    {
         VkSurfaceCapabilitiesKHR _capabilities;
         std::vector<VkSurfaceFormatKHR> _formats;
         std::vector<VkPresentModeKHR> _present_modes;
@@ -22,7 +24,8 @@ namespace DORY
      * the indices of the queue families that support graphics and presentation respectively which have been
      * selected by ::Device::FindQueueFamilies()
      */
-    struct QueueFamilyIndices {
+    struct QueueFamilyIndices
+    {
         uint32_t _graphics_family;
         uint32_t _present_family;
         bool _graphics_family_has_value = false;
@@ -35,7 +38,7 @@ namespace DORY
      * determing which physical device to use and setting up the logical device.  it also creates the command 
      * pool and debug messenger
      */
-    class Device
+    class Device : NoCopy
     {
         public:
             #ifdef NDEBUG
@@ -68,39 +71,39 @@ namespace DORY
              * function to return private members
              * @return VkCommandPool 
              */
-            VkCommandPool GetCommandPool() { return _command_pool; }
+            VkCommandPool GetCommandPool() { return m_command_pool; }
 
             /**
              * @brief get the handle for this device. function to return private members
              * @return VkDevice 
              */
-            VkDevice device() { return _device; }
+            VkDevice GetDevice() { return m_device; }
 
             /**
              * @brief get the vulkan surface created by this device. function to return private members
              * @return VkSurfaceKHR 
              */
-            VkSurfaceKHR Surface() { return _surface; }
+            VkSurfaceKHR GetSurface() { return m_surface; }
 
             /**
              * @brief get the graphics queue, which is created in ::Device::CreateLogicalDevice().
              * function to return private members
              * @return VkQueue 
              */
-            VkQueue GraphicsQueue() { return _graphics_queue; }
+            VkQueue GetGraphicsQueue() { return m_graphics_queue; }
 
             /**
              * @brief get the present queue, which is created in ::Device::CreateLogicalDevice().
              * function to return private members
              * @return VkQueue 
              */
-            VkQueue PresentQueue() { return _present_queue; }
+            VkQueue GetPresentQueue() { return m_present_queue; }
 
             /**
              * @brief get supported swapchain functionality.
              * @return SwapChainSupportDetails 
              */
-            SwapChainSupportDetails GetSwapChainSupport() { return QuerySwapChainSupport(_physical_device); }
+            SwapChainSupportDetails GetSwapChainSupport() { return QuerySwapChainSupport(m_physical_device); }
             uint32_t FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
             
             /**
@@ -108,7 +111,7 @@ namespace DORY
              * the queue families to an external caller.
              * @return QueueFamilyIndices 
              */
-            QueueFamilyIndices FindPhysicalQueueFamilies() { return FindQueueFamilies(_physical_device); }
+            QueueFamilyIndices FindPhysicalQueueFamilies() { return FindQueueFamilies(m_physical_device); }
             
             /**
              * @brief find supported formats for swap chain images
@@ -160,7 +163,7 @@ namespace DORY
 
             VkPhysicalDeviceProperties _properties; // physical device properties in device
 
-        private:
+        private: // methods
             /**
              * @brief initialize the Vulkan library to connect with the application
              */
@@ -254,29 +257,31 @@ namespace DORY
              */
             SwapChainSupportDetails QuerySwapChainSupport(VkPhysicalDevice device);
 
-            
-            VkInstance _instance; // vulkan instance in device
-            VkDebugUtilsMessengerEXT _debug_messenger; // debug messenger for vulkan in device
-            VkPhysicalDevice _physical_device = VK_NULL_HANDLE; // physical device in device
-            Window &_window; // window in device
-            VkCommandPool _command_pool; // command pool in device
+        private: // members
+            VkInstance m_instance; // vulkan instance in device
+            VkDebugUtilsMessengerEXT m_debug_messenger; // debug messenger for vulkan in device
+            VkPhysicalDevice m_physical_device = VK_NULL_HANDLE; // physical device in device
+            Window &m_window; // window in device
+            VkCommandPool m_command_pool; // command pool in device
 
-            VkDevice _device; // logical device in device
-            VkSurfaceKHR _surface; // surface in device
-            VkQueue _graphics_queue; // graphics queue in device
-            VkQueue _present_queue; // present queue in device
+            VkDevice m_device; // logical device in device
+            VkSurfaceKHR m_surface; // surface in device
+            VkQueue m_graphics_queue; // graphics queue in device
+            VkQueue m_present_queue; // present queue in device
 
             /**
              * @brief vector enabling the "useful standard validation"
              * @link https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Validation_layers
              */
-            const std::vector<const char *> _validation_layers = {"VK_LAYER_KHRONOS_validation"};
+            const std::vector<const char *> m_validation_layers = {"VK_LAYER_KHRONOS_validation"};
 
             /**
              * @brief specify required device extensions.
              * VK_KHR_SWAPCHAIN_EXTENSION_NAME is required to ensure swapchain use is supported.
+             * VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME is required to prevent warnings/errors on mac M1.
              */
-             const std::vector<const char *> _device_extensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME, VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME};
+             const std::vector<const char *> m_device_extensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME, VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME};
+    
     }; // class Device
 
 } // namepsace DORY

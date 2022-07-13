@@ -5,7 +5,7 @@ class TestApp : public DORY::Application
 public:
     TestApp()
     {
-        DORY::DINFO("Hello World!");
+        DORY::DINFO("Application Created");
     }
 
     ~TestApp()

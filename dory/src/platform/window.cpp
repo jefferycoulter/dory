@@ -7,7 +7,7 @@
 namespace DORY
 {
     Window::Window(const unsigned int& width, const unsigned int& height, const char* title)
-        :m_width{width}, m_height{height}, m_title{title}
+        : m_width{width}, m_height{height}, m_title{title}
     {
         Init();
     }
@@ -22,11 +22,12 @@ namespace DORY
     {
         glfwInit();
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // resizing will be handled differently with vulkan
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // resizing will be handled differently with vulkan
 
         m_window = glfwCreateWindow(m_width, m_height, m_title, NULL, NULL);
-
         DINFO("Window created. Width: %d, Height: %d, Title: %s", m_width, m_height, m_title);
+        glfwSetWindowUserPointer(m_window, this);
+        glfwSetFramebufferSizeCallback(m_window, FramebufferResizeCallback);
     }
 
     bool Window::ShouldClose()
@@ -40,5 +41,13 @@ namespace DORY
         {
             throw std::runtime_error("Failed to create window surface!");
         }
+    }
+
+    void Window::FramebufferResizeCallback(GLFWwindow* window, int width, int height)
+    {
+        auto _window = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+        _window->m_framebuffer_resized = true;
+        _window->m_width = width;
+        _window->m_height = height;
     }
 } // namespace DORY

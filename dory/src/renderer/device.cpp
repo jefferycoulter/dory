@@ -53,7 +53,8 @@ namespace DORY {
  * class member functions
  ***********************************************************************************************************
  */
-    Device::Device(Window &window) : _window{window}
+    Device::Device(Window &window) 
+        : m_window{window}
     {
         CreateInstance();
         SetupDebugMessenger();
@@ -65,16 +66,16 @@ namespace DORY {
 
     Device::~Device()
     {
-        vkDestroyCommandPool(_device, _command_pool, nullptr);
-        vkDestroyDevice(_device, nullptr);
+        vkDestroyCommandPool(m_device, m_command_pool, nullptr);
+        vkDestroyDevice(m_device, nullptr);
 
         if (EnableValidationLayers)
         {
-            DestroyDebugUtilsMessengerEXT(_instance, _debug_messenger, nullptr);
+            DestroyDebugUtilsMessengerEXT(m_instance, m_debug_messenger, nullptr);
         }
 
-        vkDestroySurfaceKHR(_instance, _surface, nullptr);
-        vkDestroyInstance(_instance, nullptr);
+        vkDestroySurfaceKHR(m_instance, m_surface, nullptr);
+        vkDestroyInstance(m_instance, nullptr);
     }
 
     void Device::CreateInstance()
@@ -104,8 +105,8 @@ namespace DORY {
         VkDebugUtilsMessengerCreateInfoEXT debug_create_info;
         if (EnableValidationLayers)
         {
-            create_info.enabledLayerCount = static_cast<uint32_t>(_validation_layers.size());
-            create_info.ppEnabledLayerNames = _validation_layers.data();
+            create_info.enabledLayerCount = static_cast<uint32_t>(m_validation_layers.size());
+            create_info.ppEnabledLayerNames = m_validation_layers.data();
 
             PopulateDebugMessengerCreateInfo(debug_create_info);
             create_info.pNext = (VkDebugUtilsMessengerCreateInfoEXT *)&debug_create_info;
@@ -116,7 +117,7 @@ namespace DORY {
             create_info.pNext = nullptr;
         }
 
-        if (vkCreateInstance(&create_info, nullptr, &_instance) != VK_SUCCESS)
+        if (vkCreateInstance(&create_info, nullptr, &m_instance) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to create instance!");
         }
@@ -127,36 +128,36 @@ namespace DORY {
     void Device::PickPhysicalDevice()
     {
         uint32_t device_count = 0;
-        vkEnumeratePhysicalDevices(_instance, &device_count, nullptr);
+        vkEnumeratePhysicalDevices(m_instance, &device_count, nullptr);
         if (device_count == 0)
         {
             throw std::runtime_error("Failed to find GPUs with Vulkan support!");
         }
         std::cout << "Device count: " << device_count << std::endl;
         std::vector<VkPhysicalDevice> devices(device_count);
-        vkEnumeratePhysicalDevices(_instance, &device_count, devices.data());
+        vkEnumeratePhysicalDevices(m_instance, &device_count, devices.data());
 
         for (const auto &device : devices)
         {
             if (IsDeviceSuitable(device))
             {
-                _physical_device = device;
+                m_physical_device = device;
                 break;
             }
         }
 
-        if (_physical_device == VK_NULL_HANDLE)
+        if (m_physical_device == VK_NULL_HANDLE)
         {
             throw std::runtime_error("Failed to find a suitable GPU!");
         }
 
-        vkGetPhysicalDeviceProperties(_physical_device, &_properties);
+        vkGetPhysicalDeviceProperties(m_physical_device, &_properties);
         std::cout << "physical device: " << _properties.deviceName << std::endl;
     }
 
     void Device::CreateLogicalDevice()
     {
-        QueueFamilyIndices indices = FindQueueFamilies(_physical_device);
+        QueueFamilyIndices indices = FindQueueFamilies(m_physical_device);
 
         std::vector<VkDeviceQueueCreateInfo> queue_create_infos;
         std::set<uint32_t> unique_queue_families = {indices._graphics_family, indices._present_family};
@@ -182,28 +183,28 @@ namespace DORY {
         create_info.pQueueCreateInfos = queue_create_infos.data();
 
         create_info.pEnabledFeatures = &device_features;
-        create_info.enabledExtensionCount = static_cast<uint32_t>(_device_extensions.size());
-        create_info.ppEnabledExtensionNames = _device_extensions.data();
+        create_info.enabledExtensionCount = static_cast<uint32_t>(m_device_extensions.size());
+        create_info.ppEnabledExtensionNames = m_device_extensions.data();
 
         // might not really be necessary anymore because device specific validation layers
         // have been deprecated
         if (EnableValidationLayers)
         {
-            create_info.enabledLayerCount = static_cast<uint32_t>(_validation_layers.size());
-            create_info.ppEnabledLayerNames = _validation_layers.data();
+            create_info.enabledLayerCount = static_cast<uint32_t>(m_validation_layers.size());
+            create_info.ppEnabledLayerNames = m_validation_layers.data();
         }
         else
         {
             create_info.enabledLayerCount = 0;
         }
 
-        if (vkCreateDevice(_physical_device, &create_info, nullptr, &_device) != VK_SUCCESS)
+        if (vkCreateDevice(m_physical_device, &create_info, nullptr, &m_device) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to create logical device!");
         }
 
-        vkGetDeviceQueue(_device, indices._graphics_family, 0, &_graphics_queue);
-        vkGetDeviceQueue(_device, indices._present_family, 0, &_present_queue);
+        vkGetDeviceQueue(m_device, indices._graphics_family, 0, &m_graphics_queue);
+        vkGetDeviceQueue(m_device, indices._present_family, 0, &m_present_queue);
     }
 
     void Device::CreateCommandPool()
@@ -214,13 +215,13 @@ namespace DORY {
         pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
         pool_info.queueFamilyIndex = queue_family_indices._graphics_family;
         pool_info.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT | VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-        if (vkCreateCommandPool(_device, &pool_info, nullptr, &_command_pool) != VK_SUCCESS)
+        if (vkCreateCommandPool(m_device, &pool_info, nullptr, &m_command_pool) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to create command pool!");
         }
     }
 
-    void Device::CreateSurface() { _window.CreateWindowSurface(_instance, &_surface); }
+    void Device::CreateSurface() { m_window.CreateWindowSurface(m_instance, &m_surface); }
 
     bool Device::IsDeviceSuitable(VkPhysicalDevice device)
     {
@@ -263,7 +264,7 @@ namespace DORY {
         if (!EnableValidationLayers) return;
         VkDebugUtilsMessengerCreateInfoEXT create_info;
         PopulateDebugMessengerCreateInfo(create_info);
-        if (CreateDebugUtilsMessengerEXT(_instance, &create_info, nullptr, &_debug_messenger) != VK_SUCCESS)
+        if (CreateDebugUtilsMessengerEXT(m_instance, &create_info, nullptr, &m_debug_messenger) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to set up debug messenger!");
         }
@@ -277,7 +278,7 @@ namespace DORY {
         std::vector<VkLayerProperties> available_layers(layer_count);
         vkEnumerateInstanceLayerProperties(&layer_count, available_layers.data());
 
-        for (const char *layer_name : _validation_layers)
+        for (const char *layer_name : m_validation_layers)
         {
             bool layer_found = false;
 
@@ -356,7 +357,7 @@ namespace DORY {
                                                 &extension_count,
                                                 available_extensions.data());
 
-        std::set<std::string> requiredExtensions(_device_extensions.begin(), _device_extensions.end());
+        std::set<std::string> requiredExtensions(m_device_extensions.begin(), m_device_extensions.end());
 
         for (const auto &extension : available_extensions)
         {
@@ -386,7 +387,7 @@ namespace DORY {
             }
 
             VkBool32 present_support = false;
-            vkGetPhysicalDeviceSurfaceSupportKHR(device, i, _surface, &present_support);
+            vkGetPhysicalDeviceSurfaceSupportKHR(device, i, m_surface, &present_support);
             if (queue_family.queueCount > 0 && present_support)
             {
                 indices._present_family = i;
@@ -406,24 +407,24 @@ namespace DORY {
     SwapChainSupportDetails Device::QuerySwapChainSupport(VkPhysicalDevice device)
     {
         SwapChainSupportDetails details;
-        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, _surface, &details._capabilities);
+        vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, m_surface, &details._capabilities);
 
         uint32_t format_count;
-        vkGetPhysicalDeviceSurfaceFormatsKHR(device, _surface, &format_count, nullptr);
+        vkGetPhysicalDeviceSurfaceFormatsKHR(device, m_surface, &format_count, nullptr);
 
         if (format_count != 0)
         {
             details._formats.resize(format_count);
-            vkGetPhysicalDeviceSurfaceFormatsKHR(device, _surface, &format_count, details._formats.data());
+            vkGetPhysicalDeviceSurfaceFormatsKHR(device, m_surface, &format_count, details._formats.data());
         }
 
         uint32_t present_mode_count;
-        vkGetPhysicalDeviceSurfacePresentModesKHR(device, _surface, &present_mode_count, nullptr);
+        vkGetPhysicalDeviceSurfacePresentModesKHR(device, m_surface, &present_mode_count, nullptr);
 
         if (present_mode_count != 0) {
         details._present_modes.resize(present_mode_count);
         vkGetPhysicalDeviceSurfacePresentModesKHR(  device,
-                                                    _surface,
+                                                    m_surface,
                                                     &present_mode_count,
                                                     details._present_modes.data());
         }
@@ -435,7 +436,7 @@ namespace DORY {
         for (VkFormat format : candidates)
         {
             VkFormatProperties props;
-            vkGetPhysicalDeviceFormatProperties(_physical_device, format, &props);
+            vkGetPhysicalDeviceFormatProperties(m_physical_device, format, &props);
 
             if (tiling == VK_IMAGE_TILING_LINEAR && (props.linearTilingFeatures & features) == features)
             {
@@ -453,7 +454,7 @@ namespace DORY {
     uint32_t Device::FindMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties)
     {
         VkPhysicalDeviceMemoryProperties mem_properties;
-        vkGetPhysicalDeviceMemoryProperties(_physical_device, &mem_properties);
+        vkGetPhysicalDeviceMemoryProperties(m_physical_device, &mem_properties);
         for (uint32_t i = 0; i < mem_properties.memoryTypeCount; i++)
         {
             if ((typeFilter & (1 << i)) && (mem_properties.memoryTypes[i].propertyFlags & properties) == properties)
@@ -477,25 +478,25 @@ namespace DORY {
         bufferInfo.usage = usage;
         bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-        if (vkCreateBuffer(_device, &bufferInfo, nullptr, &buffer) != VK_SUCCESS)
+        if (vkCreateBuffer(m_device, &bufferInfo, nullptr, &buffer) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to create vertex buffer!");
         }
 
         VkMemoryRequirements memRequirements;
-        vkGetBufferMemoryRequirements(_device, buffer, &memRequirements);
+        vkGetBufferMemoryRequirements(m_device, buffer, &memRequirements);
 
         VkMemoryAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
         allocInfo.allocationSize = memRequirements.size;
         allocInfo.memoryTypeIndex = FindMemoryType(memRequirements.memoryTypeBits, properties);
 
-        if (vkAllocateMemory(_device, &allocInfo, nullptr, &buffer_memory) != VK_SUCCESS)
+        if (vkAllocateMemory(m_device, &allocInfo, nullptr, &buffer_memory) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to allocate vertex buffer memory!");
         }
 
-        vkBindBufferMemory(_device, buffer, buffer_memory, 0);
+        vkBindBufferMemory(m_device, buffer, buffer_memory, 0);
     }
 
     VkCommandBuffer Device::BeginSingleTimeCommands()
@@ -503,11 +504,11 @@ namespace DORY {
         VkCommandBufferAllocateInfo alloc_info{};
         alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
         alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        alloc_info.commandPool = _command_pool;
+        alloc_info.commandPool = m_command_pool;
         alloc_info.commandBufferCount = 1;
 
         VkCommandBuffer command_buffer;
-        vkAllocateCommandBuffers(_device, &alloc_info, &command_buffer);
+        vkAllocateCommandBuffers(m_device, &alloc_info, &command_buffer);
 
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -526,10 +527,10 @@ namespace DORY {
         submit_info.commandBufferCount = 1;
         submit_info.pCommandBuffers = &command_buffer;
 
-        vkQueueSubmit(_graphics_queue, 1, &submit_info, VK_NULL_HANDLE);
-        vkQueueWaitIdle(_graphics_queue);
+        vkQueueSubmit(m_graphics_queue, 1, &submit_info, VK_NULL_HANDLE);
+        vkQueueWaitIdle(m_graphics_queue);
 
-        vkFreeCommandBuffers(_device, _command_pool, 1, &command_buffer);
+        vkFreeCommandBuffers(m_device, m_command_pool, 1, &command_buffer);
     }
 
     void Device::CopyBuffer(VkBuffer src_buffer, VkBuffer dst_buffer, VkDeviceSize size)
@@ -576,25 +577,25 @@ namespace DORY {
                                         VkImage &image,
                                         VkDeviceMemory &image_memory)
     {
-        if (vkCreateImage(_device, &image_info, nullptr, &image) != VK_SUCCESS)
+        if (vkCreateImage(m_device, &image_info, nullptr, &image) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to create image!");
         }
 
         VkMemoryRequirements mem_requirements;
-        vkGetImageMemoryRequirements(_device, image, &mem_requirements);
+        vkGetImageMemoryRequirements(m_device, image, &mem_requirements);
 
         VkMemoryAllocateInfo alloc_info{};
         alloc_info.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
         alloc_info.allocationSize = mem_requirements.size;
         alloc_info.memoryTypeIndex = FindMemoryType(mem_requirements.memoryTypeBits, properties);
 
-        if (vkAllocateMemory(_device, &alloc_info, nullptr, &image_memory) != VK_SUCCESS)
+        if (vkAllocateMemory(m_device, &alloc_info, nullptr, &image_memory) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to allocate image memory!");
         }
 
-        if (vkBindImageMemory(_device, image, image_memory, 0) != VK_SUCCESS)
+        if (vkBindImageMemory(m_device, image, image_memory, 0) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to bind image memory!");
         }

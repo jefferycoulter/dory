@@ -39,6 +39,10 @@ namespace DORY
              */
             VkExtent2D GetExtent() const { return {static_cast<uint32_t>(m_width), static_cast<uint32_t>(m_height)}; }
 
+            bool WindowResized() { return m_framebuffer_resized; }
+
+            void ResetWindowResizedFlag() { m_framebuffer_resized = false; }
+
             /**
              * @brief determine whether the window should close or not
              * @return true
@@ -46,32 +50,20 @@ namespace DORY
              */
             bool ShouldClose();
 
-        private:
+        private: // methods
             /**
              * @brief initialize the GLFW and create a window.  @see _window
              */
             void Init();
 
-        private:
-            /**
-             * @brief pointer to the application's window
-             */
-            GLFWwindow *m_window;
+            static void FramebufferResizeCallback(GLFWwindow* window, int width, int height);
 
-            /**
-             * @brief window width
-             */
-            const unsigned int m_width;
-
-            /**
-             * @brief window height
-             */
-            const unsigned int m_height;
-
-            /**
-             * @brief window title
-             */
-            const char* m_title;
+        private: // members
+            GLFWwindow *m_window; // pointer to the application's window
+            unsigned int m_width; // window width
+            unsigned int m_height; // window height
+            const char* m_title; // window title
+            bool m_framebuffer_resized = false; // flag to indicate whether the framebuffer has been resized
 
     }; // class Window
 

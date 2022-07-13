@@ -58,7 +58,7 @@ namespace DORY
          * @param file the path and name of the code file containing the failure
          * @param line the line number in the file where the failure occurred
          */
-        void assertion_failure(const std::string& expression, const std::string& message, const std::string& file, signed int line);
+        void assertion_failure(const char* expression, const char* message, const char* file, signed int line);
 
         /**
          * @brief asserts the provided expression to be true, and logs a failure if not. then triggers
@@ -86,9 +86,9 @@ namespace DORY
             #define KASSERT_DEBUG(expr)
         #endif
     #else // assertions disabled
-        #define KASSERT(expr)
-        #define KASSERT_MSG(expr, message) 
-        #define KASSERT_DEBUG(expr) 
+        #define DASSERT(expr)
+        #define DASSERT_MSG(expr, message) 
+        #define DASSERT_DEBUG(expr) 
 
     #endif
 

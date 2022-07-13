@@ -1,12 +1,18 @@
 # specify source and header files
 set(RENDERER_SRCS 
     device.cpp
+    model.cpp
     pipeline.cpp
+    renderer.cpp
+    swapchain.cpp
 )
 
 set(RENDERER_HDRS 
     device.h
+    model.h
     pipeline.h
+    renderer.h
+    swapchain.h
 )
 
 # add the files to the target

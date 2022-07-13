@@ -1,17 +1,33 @@
 #ifndef DORY_PIPELINE_INCL
 #define DORY_PIPELINE_INCL
 
-#include "utils/utils.h"
 #include "device.h"
+#include "model.h"
+#include "utils/nocopy.h"
+#include "utils/utils.h"
 
 #include <iostream>
 #include <string>
 
 namespace DORY
 {
-    struct PipelineConfigInfo
-    {
+    struct PipelineConfigInfo : NoCopy
+    {   
+        // set in Pipeline::DefaultConfig()
+        VkPipelineViewportStateCreateInfo _viewport_info;
+        VkPipelineInputAssemblyStateCreateInfo _input_assembly_info; // first stage of graphics pipeline
+        VkPipelineRasterizationStateCreateInfo _rasterization_info; // next stage after vertex shader
+        VkPipelineMultisampleStateCreateInfo _multisample_info;
+        VkPipelineColorBlendAttachmentState _color_blend_attachment; // stage following fragment shader
+        VkPipelineColorBlendStateCreateInfo _color_blend_info;
+        VkPipelineDepthStencilStateCreateInfo _depth_stencil_info;
+        std::vector<VkDynamicState> _dynamic_states;
+        VkPipelineDynamicStateCreateInfo _dynamic_state_info;
 
+        // set elsewhere
+        VkPipelineLayout _pipeline_layout = nullptr;
+        VkRenderPass _render_pass = nullptr;
+        uint32_t _subpass = 0;
     };
 
     /**
@@ -35,7 +51,12 @@ namespace DORY
             /**
              * @brief destroy the Pipeline object
              */
-            ~Pipeline() {};
+            ~Pipeline();
+
+            /**
+             * @brief bind the pipeline to the given command buffer
+             */
+            void Bind(VkCommandBuffer command_buffer);
 
             /**
              * @brief default configuration settings for the
@@ -44,9 +65,9 @@ namespace DORY
              * @param height 
              * @return PipelineConfigInfo 
              */
-            static PipelineConfigInfo DefaultConfig(uint32_t width, uint32_t height);
+            static void DefaultConfig(PipelineConfigInfo& info);
 
-        private:
+        private: // methods
             /**
              * @brief helper function for creating the graphics pipeline
              * 
@@ -55,12 +76,19 @@ namespace DORY
              */
             void CreatePipeline(const PipelineConfigInfo& info ,const std::string& vertex_path, const std::string& fragment_path);
 
+            /**
+             * @brief create the shader modules for the pipeline
+             * @param code path to shader source code
+             * @param shader_module pointer vulkan shader module to be created
+             */
             void CreateShaderModule(const std::vector<char>& code, VkShaderModule *shader_module);
 
-            Device& _device; // reference to device in pipeline
-            VkPipeline _graphics_pipeline; // graphics pipeline handle in pipeline
-            VkShaderModule _vert_shader_module; // vertex shader module handle in pipeline
-            VkShaderModule _frag_shader_module; // fragment shader module handle in pipeline
+        private: // members
+            Device& m_device; // reference to device in pipeline
+            VkPipeline m_graphics_pipeline; // graphics pipeline handle in pipeline
+            VkShaderModule m_vert_shader_module; // vertex shader module handle in pipeline
+            VkShaderModule m_frag_shader_module; // fragment shader module handle in pipeline
+            
     }; // class Pipeline
 
 } // namespace DORY
