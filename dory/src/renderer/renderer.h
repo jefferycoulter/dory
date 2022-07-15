@@ -12,9 +12,10 @@
 namespace DORY
 {
     /**
-     * @brief class representing the renderer
+     * @brief class representing the renderer. this sets up the rendering details for the application
+     * such as the swap chain, render passes, and command buffer allocation.
      */
-    class Renderer : NoCopy
+    class Renderer : public NoCopy
     {
         public:
             /**

@@ -12,7 +12,7 @@
 
 namespace DORY
 {
-    class Model : NoCopy
+    class Model : public NoCopy
     {
         public:
 

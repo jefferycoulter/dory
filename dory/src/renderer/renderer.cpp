@@ -49,13 +49,24 @@ namespace DORY
         }
 
         vkDeviceWaitIdle(m_device.GetDevice());
+
+        // if no swap chain, then create a new one
         if (m_swap_chain == nullptr)
         {
             m_swap_chain = std::make_unique<SwapChain>(m_device, extent);
         }
-        else
+        else // there is an existing swap chain
         {
-            m_swap_chain = std::make_unique<SwapChain>(m_device, extent, std::move(m_swap_chain));
+            // save the old swap chain
+            std::shared_ptr<SwapChain> old_swap_chain = std::move(m_swap_chain);
+            // make a new one with new extent
+            m_swap_chain = std::make_unique<SwapChain>(m_device, extent, old_swap_chain);
+            // check that the formats are the same
+            if (!old_swap_chain->CompareFormats(*m_swap_chain.get()))
+            {
+                throw std::runtime_error("Swap chain image or depth format changed!");
+            }
+            // check whether command buffers need to be recreated
             if (m_swap_chain->GetImageCount() != m_command_buffer.size())
             {
                 FreeCommandBuffers();
@@ -71,7 +82,6 @@ namespace DORY
         DASSERT_MSG(!m_frame_in_progress, "Can't begin frame when frame is in progress.");
 
         auto result = m_swap_chain->AcquireNextImage(&m_current_image_index);
-
         if (result == VK_ERROR_OUT_OF_DATE_KHR)
         {
             RecreateSwapChain();
@@ -88,7 +98,6 @@ namespace DORY
         auto command_buffer = GetCurrentCommandBuffer();
         VkCommandBufferBeginInfo begin_info{};
         begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-
         if (vkBeginCommandBuffer(command_buffer, &begin_info) != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to begin recording command buffer!");
@@ -113,7 +122,7 @@ namespace DORY
             m_window.ResetWindowResizedFlag();
             RecreateSwapChain();
         }
-        if (result != VK_SUCCESS)
+        else if (result != VK_SUCCESS)
         {
             throw std::runtime_error("Failed to submit command buffer!");
         }

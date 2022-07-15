@@ -10,6 +10,7 @@ set(RENDERER_SRCS
 set(RENDERER_HDRS 
     device.h
     model.h
+    object.h
     pipeline.h
     renderer.h
     swapchain.h

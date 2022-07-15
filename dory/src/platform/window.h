@@ -9,7 +9,7 @@
 
 namespace DORY
 {
-    class Window : NoCopy
+    class Window : public NoCopy
     {
         public:
             /**

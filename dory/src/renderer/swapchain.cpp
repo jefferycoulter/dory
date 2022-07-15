@@ -319,6 +319,7 @@ namespace DORY
     void SwapChain::CreateDepthResources()
     {
         VkFormat depth_format = FindDepthFormat();
+        m_swap_chain_depth_format = depth_format;
         VkExtent2D swap_chain_extent = GetSwapChainExtent();
 
         m_depth_images.resize(GetImageCount());

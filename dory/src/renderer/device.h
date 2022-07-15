@@ -38,7 +38,7 @@ namespace DORY
      * determing which physical device to use and setting up the logical device.  it also creates the command 
      * pool and debug messenger
      */
-    class Device : NoCopy
+    class Device : public NoCopy
     {
         public:
             #ifdef NDEBUG

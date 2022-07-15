@@ -11,7 +11,7 @@
 
 namespace DORY
 {
-    struct PipelineConfigInfo : NoCopy
+    struct PipelineConfigInfo : public NoCopy
     {   
         // set in Pipeline::DefaultConfig()
         VkPipelineViewportStateCreateInfo _viewport_info;

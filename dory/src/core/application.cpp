@@ -1,4 +1,5 @@
 #include "application.h"
+#include "systems/renderer_system.h"
 
 #include <stdexcept>
 #include <array>
@@ -7,18 +8,16 @@ namespace DORY
 {
     Application::Application()
     {
-        LoadModels();
-        CreatePipelineLayout();
-        CreatePipeline();
+        LoadObjects();
     }
     
     Application::~Application()
     {
-        vkDestroyPipelineLayout(m_device.GetDevice(), m_pipeline_layout, nullptr);
     }
     
     void Application::Run()
     {
+        RendererSystem renderer_system{m_device, m_renderer.GetSwapChainRenderPass()};
         // run the application
         while (!m_window.ShouldClose())
         {
@@ -28,7 +27,7 @@ namespace DORY
             if (auto command_buffer = m_renderer.BeginFrame())
             {
                 m_renderer.BeginSwapChainRenderPass(command_buffer);
-                LoadModels();
+                renderer_system.RenderObjects(command_buffer, m_objects);
                 m_renderer.EndSwapChainRenderPass(command_buffer);
                 m_renderer.EndFrame();
             }
@@ -37,38 +36,7 @@ namespace DORY
         vkDeviceWaitIdle(m_device.GetDevice());
     }
 
-    void Application::CreatePipelineLayout()
-    {
-        VkPushConstantRange push_constant_range{};
-        push_constant_range.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
-        push_constant_range.offset = 0;
-        push_constant_range.size = sizeof(PushConstantData);
-
-        VkPipelineLayoutCreateInfo pipeline_layout_info{};
-        pipeline_layout_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-        pipeline_layout_info.setLayoutCount = 0;
-        pipeline_layout_info.pSetLayouts = nullptr;
-        pipeline_layout_info.pushConstantRangeCount = 1;
-        pipeline_layout_info.pPushConstantRanges = &push_constant_range;
-
-        if (vkCreatePipelineLayout(m_device.GetDevice(), &pipeline_layout_info, nullptr, &m_pipeline_layout) != VK_SUCCESS)
-        {
-            throw std::runtime_error("Failed to create pipeline layout!");
-        }
-    }
-
-    void Application::CreatePipeline()
-    {
-        DASSERT_MSG(m_pipeline_layout != nullptr, "Pipeline layout is null!");
-
-        PipelineConfigInfo pipeline_config{};
-        Pipeline::DefaultConfig(pipeline_config);
-        pipeline_config._render_pass = m_renderer.GetSwapChainRenderPass();
-        pipeline_config._pipeline_layout = m_pipeline_layout;
-        m_pipeline = std::make_unique<Pipeline>(m_device, pipeline_config, "assets/shaders/shader.vert.spv", "assets/shaders/shader.frag.spv");
-    }
-
-    void Application::LoadModels()
+    void Application::LoadObjects()
     {
         std::vector<Model::Vertex> vertices
         {
@@ -77,7 +45,15 @@ namespace DORY
             {{-0.5f, 0.5f}},
         };
 
-        m_model = std::make_unique<Model>(m_device, vertices);
+        auto model = std::make_shared<Model>(m_device, vertices); // shared pointer so that multiple objects can share the same model
+        auto triangle = Object::CreateObject();
+        triangle.m_model = model;
+        triangle.m_color = {0.1f, 0.8f, 0.1f};
+        triangle.transform_2d.translation.x = 0.2f;
+        triangle.transform_2d.scale.x = 0.5f;
+        triangle.transform_2d.scale.y = 2.0f;
+        triangle.transform_2d.rotation = 0.25f * glm::two_pi<float>();
+        m_objects.push_back(std::move(triangle));
     }
 
 } // namespace DORY

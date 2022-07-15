@@ -16,7 +16,7 @@ namespace DORY
      * @brief this class encapsulates the swap chain and its associated images and buffers.  it creates the
      * frame buffers and render pass for the swap chain.
      */
-    class SwapChain : NoCopy
+    class SwapChain : public NoCopy
     {
         public:
             // limit at most 2 command buffers sent to device graphics queue at once
@@ -100,6 +100,19 @@ namespace DORY
              * @return VkFormat 
              */
             VkFormat FindDepthFormat();
+
+            /**
+             * @brief when the swap chain is recreated, the image and depth formats could potentially change.
+             * this checks whether the swap chain image format and depth format are compatible with the current 
+             * @param swap_chain 
+             * @return true 
+             * @return false 
+             */
+            bool CompareFormats(const SwapChain& swap_chain) const
+            {
+                return m_swap_chain_image_format == swap_chain.m_swap_chain_image_format &&
+                       m_swap_chain_depth_format == swap_chain.m_swap_chain_depth_format;
+            }
 
             /**
              * @brief get the index of next image in the swap chain.  this is the image that will be 
@@ -187,6 +200,7 @@ namespace DORY
 
         private: // members
             VkFormat m_swap_chain_image_format;
+            VkFormat m_swap_chain_depth_format;
             VkExtent2D m_swap_chain_extent;
 
             std::vector<VkFramebuffer> m_swap_chain_framebuffers;
