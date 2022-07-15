@@ -17,7 +17,7 @@ namespace DORY
 
     void Renderer::CreateCommandBuffers()
     {
-        m_command_buffer.resize(m_swap_chain->GetImageCount());
+        m_command_buffer.resize(SwapChain::MAX_FRAMES_IN_FLIGHT);
 
         // initialize the command buffer info struct
         VkCommandBufferAllocateInfo alloc_info{};
@@ -65,12 +65,6 @@ namespace DORY
             if (!old_swap_chain->CompareFormats(*m_swap_chain.get()))
             {
                 throw std::runtime_error("Swap chain image or depth format changed!");
-            }
-            // check whether command buffers need to be recreated
-            if (m_swap_chain->GetImageCount() != m_command_buffer.size())
-            {
-                FreeCommandBuffers();
-                CreateCommandBuffers();
             }
         }
 
@@ -128,6 +122,7 @@ namespace DORY
         }
 
         m_frame_in_progress = false;
+        m_current_frame_index = (m_current_frame_index + 1) % SwapChain::MAX_FRAMES_IN_FLIGHT;
     }
 
     void Renderer::BeginSwapChainRenderPass(VkCommandBuffer command_buffer)

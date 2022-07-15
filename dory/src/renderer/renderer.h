@@ -48,7 +48,17 @@ namespace DORY
             VkCommandBuffer GetCurrentCommandBuffer() const
             { 
                 DASSERT_MSG(m_frame_in_progress, "Can't get current command buffer when frame is in progress");
-                return m_command_buffer[m_current_image_index]; 
+                return m_command_buffer[m_current_frame_index]; 
+            }
+
+            /**
+             * @brief get the current image index
+             * @return uint32_t 
+             */
+            uint32_t GetCurrentFrameIndex() const
+            { 
+                DASSERT_MSG(m_frame_in_progress, "Can't get current frame index when frame is in progress");
+                return m_current_frame_index;
             }
 
             /**
@@ -100,6 +110,7 @@ namespace DORY
             std::vector<VkCommandBuffer> m_command_buffer; // renderer's command buffers
             uint32_t m_current_image_index; // index of the current image in the swap chain
             bool m_frame_in_progress = false; // check whether a frame is in progress
+            uint32_t m_current_frame_index; // current frame number
 
     }; // class Renderer
 
