@@ -4,11 +4,10 @@ project(test_application)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/tests/bin)
 
 # specify source and header files
-file(GLOB TLOG_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
-file(GLOB TLOG_HDRS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
+set(TAPP_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/test_application.cpp)
 
 # add the executable to be built
-add_executable(${PROJECT_NAME} ${TLOG_SRCS} ${TLOG_HDRS})
+add_executable(${PROJECT_NAME} ${TAPP_SRCS})
 
 # link the library
 target_link_libraries(${PROJECT_NAME} PUBLIC dory)
