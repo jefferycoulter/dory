@@ -2,6 +2,8 @@
 #define DORY_APPLICATION_INCL
 
 #include "core/core.h"
+#include "events/event.h"
+#include "events/window_event.h"
 #include "math/push.h"
 #include "platform/window.h"
 #include "renderer/device.h"
@@ -49,6 +51,12 @@ namespace DORY
              * @brief run the application
              */
             void Run();
+
+            /**
+             * @brief tell the application to do something in response to a given event
+             * @param event the event to handle
+             */
+            void OnEvent(Event& event);
 
         private: // methods
             /**

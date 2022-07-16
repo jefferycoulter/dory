@@ -8,6 +8,8 @@ namespace DORY
 {
     Application::Application()
     {
+        // set the window event callback to be the application's OnEvent method
+        m_window.SetEventCallback([this](Event& event) { this->OnEvent(event); });
         LoadObjects();
     }
     
@@ -34,6 +36,11 @@ namespace DORY
         }
 
         vkDeviceWaitIdle(m_device.GetDevice());
+    }
+
+    void Application::OnEvent(Event& event)
+    {
+        DTRACE("%s \n", event.toString().c_str());
     }
 
     void Application::LoadObjects()

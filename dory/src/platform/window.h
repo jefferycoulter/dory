@@ -1,11 +1,14 @@
 #ifndef DORY_WINDOW_INCL
 #define DORY_WINDOW_INCL
 
+#include "events/event.h"
 #include "utils/nocopy.h"
 
 #define GLFW_INCLUDE_VULKAN
 #define VK_ENABLE_BETA_EXTENSIONS
 #include <GLFW/glfw3.h>
+
+#include <functional>
 
 namespace DORY
 {
@@ -50,19 +53,32 @@ namespace DORY
              */
             bool ShouldClose();
 
+            /**
+             * @brief set the event callback function for the window. 
+             * @see application.cpp
+             */
+            void SetEventCallback(const std::function<void(Event&)>& callback)
+            {
+                m_callback = callback;
+            }
+
         private: // methods
             /**
-             * @brief initialize the GLFW and create a window.  @see _window
+             * @brief initialize the GLFW and create a window.
              */
             void Init();
 
-            static void FramebufferResizeCallback(GLFWwindow* window, int width, int height);
+            /**
+             * @brief set the GLFW event callbacks for the window.
+             */
+            void SetGLFWCallbacks();
 
         private: // members
             GLFWwindow *m_window; // pointer to the application's window
             unsigned int m_width; // window width
             unsigned int m_height; // window height
             const char* m_title; // window title
+            std::function<void(Event&)> m_callback; // callback function for events
             bool m_framebuffer_resized = false; // flag to indicate whether the framebuffer has been resized
 
     }; // class Window
