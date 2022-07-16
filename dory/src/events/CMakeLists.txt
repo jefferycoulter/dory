@@ -4,6 +4,7 @@ set(CORE_SRCS
 )
 set(CORE_HDRS
     event.h
+    event_handler.h
     keyboard_event.h
     mouse_event.h
     window_event.h    
