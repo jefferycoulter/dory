@@ -21,7 +21,8 @@ namespace DORY
              */
             struct Vertex
             {
-                glm::vec2 a_position;
+                glm::vec3 a_position;
+                glm::vec3 a_color;
 
                 /**
                  * @brief get the binding descriptions of the vertex

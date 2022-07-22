@@ -43,24 +43,76 @@ namespace DORY
         DTRACE("%s \n", event.toString().c_str());
     }
 
-    void Application::LoadObjects()
+    // temporary helper function, creates a 1x1x1 cube centered at offset
+    std::unique_ptr<Model> CreateCube(Device& device, glm::vec3 offset)
     {
-        std::vector<Model::Vertex> vertices
-        {
-            {{0.0f, -0.5f}},
-            {{0.5f, 0.5f}},
-            {{-0.5f, 0.5f}},
+        std::vector<Model::Vertex> vertices{
+
+            // left face (white)
+            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
+            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
+            {{-.5f, -.5f, .5f}, {.9f, .9f, .9f}},
+            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
+            {{-.5f, .5f, -.5f}, {.9f, .9f, .9f}},
+            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
+
+            // right face (yellow)
+            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
+            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
+            {{.5f, -.5f, .5f}, {.8f, .8f, .1f}},
+            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
+            {{.5f, .5f, -.5f}, {.8f, .8f, .1f}},
+            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
+
+            // top face (orange, remember y axis points down)
+            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
+            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
+            {{-.5f, -.5f, .5f}, {.9f, .6f, .1f}},
+            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
+            {{.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
+            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
+
+            // bottom face (red)
+            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
+            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
+            {{-.5f, .5f, .5f}, {.8f, .1f, .1f}},
+            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
+            {{.5f, .5f, -.5f}, {.8f, .1f, .1f}},
+            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
+
+            // nose face (blue)
+            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
+            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
+            {{-.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
+            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
+            {{.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
+            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
+
+            // tail face (green)
+            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
+            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
+            {{-.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
+            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
+            {{.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
+            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
         };
 
-        auto model = std::make_shared<Model>(m_device, vertices); // shared pointer so that multiple objects can share the same model
-        auto triangle = Object::CreateObject();
-        triangle.m_model = model;
-        triangle.m_color = {0.1f, 0.8f, 0.1f};
-        triangle.transform_2d.translation.x = 0.2f;
-        triangle.transform_2d.scale.x = 0.5f;
-        triangle.transform_2d.scale.y = 2.0f;
-        triangle.transform_2d.rotation = 0.25f * glm::two_pi<float>();
-        m_objects.push_back(std::move(triangle));
+        for (auto& v : vertices) 
+        {
+            v.a_position += offset;
+        }
+
+        return std::make_unique<Model>(device, vertices);
+    }
+
+    void Application::LoadObjects()
+    {
+        std::shared_ptr<Model> cube_model = CreateCube(m_device, glm::vec3{0.0f, 0.0f, 0.0f});
+        auto cube = Object::CreateObject();
+        cube.m_model = cube_model;
+        cube.transform.translation = glm::vec3{0.0f, 0.0f, 0.5f};
+        cube.transform.scale = glm::vec3{0.5f, 0.5f, 0.5f};
+        m_objects.push_back(std::move(cube));
     }
 
 } // namespace DORY

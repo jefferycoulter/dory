@@ -30,9 +30,9 @@ namespace DORY
              * @brief get the unqiue id of an object
              * @return unsigned int 
              */
-            unsigned int GetObjectId() const { return m_id; }
+            uint32_t GetObjectId() const { return m_id; }
 
-            // for some reason inheriting from NoCopy doesn't work here.
+            // for some reason inheriting from NoCopy doesn't work here, so delete the copy constructor and assignment operator
             Object(Object const&) = delete;
             Object& operator=(Object const&) = delete;
             // default move constructor and assignment operator
@@ -41,7 +41,7 @@ namespace DORY
 
             std::shared_ptr<Model> m_model{};
             glm::vec3 m_color{};
-            TransformObject2D transform_2d{};
+            TransformObject transform{};
 
         private: // methods
             // private constructor to ensure objects created with CreateObject() have unqiue ids
@@ -51,7 +51,7 @@ namespace DORY
             };
 
         private: // members
-            unsigned int m_id; // object id
+            uint32_t m_id; // object id
 
     }; // class Object
 

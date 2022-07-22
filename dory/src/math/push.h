@@ -8,10 +8,16 @@
 
 namespace DORY
 {
-    struct PushConstantData
+    struct PushConstantData2D
     {
         glm::mat2 transform{1.0f};
         glm::vec2 offset;
+        alignas(16) glm::vec3 color;
+    };
+
+    struct PushConstantData3D
+    {
+        glm::mat4 transform{1.0f};
         alignas(16) glm::vec3 color;
     };
 

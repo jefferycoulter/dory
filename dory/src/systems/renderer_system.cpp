@@ -25,7 +25,7 @@ namespace DORY
         VkPushConstantRange push_constant_range{};
         push_constant_range.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
         push_constant_range.offset = 0;
-        push_constant_range.size = sizeof(PushConstantData);
+        push_constant_range.size = sizeof(PushConstantData3D);
 
         VkPipelineLayoutCreateInfo pipeline_layout_info{};
         pipeline_layout_info.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -57,13 +57,13 @@ namespace DORY
 
         for (auto& object : objects)
         {
-            object.transform_2d.rotation = glm::mod(object.transform_2d.rotation + 0.01f, glm::two_pi<float>());
-            PushConstantData push{};
-            push.offset = object.transform_2d.translation;
+            object.transform.rotation.x = glm::mod(object.transform.rotation.x + 0.01f, glm::two_pi<float>());
+            object.transform.rotation.y = glm::mod(object.transform.rotation.y + 0.02f, glm::two_pi<float>());
+            PushConstantData3D push{};
             push.color = object.m_color;
-            push.transform = object.transform_2d.mat2D();
+            push.transform = object.transform.mat4();
 
-            vkCmdPushConstants(command_buffer, m_pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(PushConstantData), &push);
+            vkCmdPushConstants(command_buffer, m_pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(PushConstantData3D), &push);
             object.m_model->Bind(command_buffer);
             object.m_model->Draw(command_buffer);
         }
