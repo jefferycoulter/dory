@@ -34,6 +34,14 @@ namespace DORY
              */
             VkRenderPass GetSwapChainRenderPass() const { return m_swap_chain->GetRenderPass(); }
 
+
+            /**
+             * @brief get the aspect ratio of the window. this is used to adjust the orthographic projection
+             * so that the scene is rendered in the correct shape when the window is resized.
+             * @return float 
+             */
+            float GetSwapChainAspectRatio() const { return m_swap_chain->ExtentAspectRatio(); }
+
             /**
              * @brief check if a frame is currently being rendered
              * @return true 

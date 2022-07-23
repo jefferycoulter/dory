@@ -51,9 +51,11 @@ namespace DORY
         m_pipeline = std::make_unique<Pipeline>(m_device, pipeline_config, "assets/shaders/shader.vert.spv", "assets/shaders/shader.frag.spv");
     }
 
-    void RendererSystem::RenderObjects(VkCommandBuffer command_buffer, std::vector<Object>& objects)
+    void RendererSystem::RenderObjects(VkCommandBuffer command_buffer, std::vector<Object>& objects, const Camera& camera)
     {
         m_pipeline->Bind(command_buffer);
+
+        auto projection_view_matrix = camera.GetProjection() * camera.GetView();
 
         for (auto& object : objects)
         {
@@ -61,7 +63,7 @@ namespace DORY
             object.transform.rotation.y = glm::mod(object.transform.rotation.y + 0.02f, glm::two_pi<float>());
             PushConstantData3D push{};
             push.color = object.m_color;
-            push.transform = object.transform.mat4();
+            push.transform = projection_view_matrix * object.transform.mat4();
 
             vkCmdPushConstants(command_buffer, m_pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(PushConstantData3D), &push);
             object.m_model->Bind(command_buffer);

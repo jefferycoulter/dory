@@ -19,7 +19,7 @@ namespace DORY
         glm::vec3 rotation{0.0f}; // rotation angles for each axis in radians
 
         /**
-         * @brief resulting matrix corrsponds to Translate * Rz * Ry * Rx * Scale. 
+         * @brief resulting transformation matrix corrsponds to Translate * Rz * Ry * Rx * Scale. 
          * simple euler angles rotation for now. rotations correspond to tait-bryan angles of Z(1), Y(2), X(3).
          * https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
          * @return glm::mat4 translation * rotation.y * rotation.x * rotation.z * scale

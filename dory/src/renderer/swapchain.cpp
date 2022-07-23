@@ -407,19 +407,20 @@ namespace DORY
         {
             if (available_present_mode == VK_PRESENT_MODE_MAILBOX_KHR)
             {
-                std::cout << "Present mode: Mailbox" << std::endl;
+                std::cout << "Present mode: Mailbox" << "\n";
                 return available_present_mode;
             }
         }
 
-        // for (const auto &availablePresentMode : availablePresentModes) {
-        //   if (availablePresentMode == VK_PRESENT_MODE_IMMEDIATE_KHR) {
-        //     std::cout << "Present mode: Immediate" << std::endl;
-        //     return availablePresentMode;
+        // for (const auto &available_present_mode : available_present_modes)
+        // {
+        //   if (available_present_mode == VK_PRESENT_MODE_IMMEDIATE_KHR) {
+        //     std::cout << "Present mode: Immediate" << "\n";
+        //     return available_present_mode;
         //   }
         // }
 
-        std::cout << "Present mode: V-Sync" << std::endl;
+        std::cout << "Present mode: V-Sync" << "\n";
         return VK_PRESENT_MODE_FIFO_KHR;
     }
 

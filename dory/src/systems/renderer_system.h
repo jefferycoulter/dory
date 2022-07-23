@@ -3,6 +3,7 @@
 
 #include "core/core.h"
 #include "math/push.h"
+#include "renderer/camera.h"
 #include "renderer/device.h"
 #include "renderer/object.h"
 #include "renderer/pipeline.h"
@@ -35,7 +36,7 @@ namespace DORY
              * @brief render the application's objects
              * @param command_buffer the
              */
-            void RenderObjects(VkCommandBuffer command_buffer, std::vector<Object>& objects);
+            void RenderObjects(VkCommandBuffer command_buffer, std::vector<Object>& objects, const Camera& camera);
 
         private: // methods
             /**

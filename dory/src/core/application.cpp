@@ -1,4 +1,5 @@
 #include "application.h"
+#include "renderer/camera.h"
 #include "systems/renderer_system.h"
 
 #include <stdexcept>
@@ -20,16 +21,24 @@ namespace DORY
     void Application::Run()
     {
         RendererSystem renderer_system{m_device, m_renderer.GetSwapChainRenderPass()};
+        Camera camera{};
+        camera.SetViewDirection(glm::vec3(0.0f), glm::vec3(0.5f, 0.0f, 1.0f));
+
         // run the application
         while (!m_window.ShouldClose())
         {
             glfwPollEvents();
+
+            float aspect = m_renderer.GetSwapChainAspectRatio();
+
+            // update the camera in case window was resized
+            camera.SetPerspectiveProjection(glm::radians(45.0f), aspect, 0.1f, 100.0f);
             
             // BeginFrame() returns nullptr if the swap chain is not ready (i.e. the window is being resized, etc.)
             if (auto command_buffer = m_renderer.BeginFrame())
             {
                 m_renderer.BeginSwapChainRenderPass(command_buffer);
-                renderer_system.RenderObjects(command_buffer, m_objects);
+                renderer_system.RenderObjects(command_buffer, m_objects, camera);
                 m_renderer.EndSwapChainRenderPass(command_buffer);
                 m_renderer.EndFrame();
             }
@@ -110,7 +119,7 @@ namespace DORY
         std::shared_ptr<Model> cube_model = CreateCube(m_device, glm::vec3{0.0f, 0.0f, 0.0f});
         auto cube = Object::CreateObject();
         cube.m_model = cube_model;
-        cube.transform.translation = glm::vec3{0.0f, 0.0f, 0.5f};
+        cube.transform.translation = glm::vec3{0.0f, 0.0f, 2.5f};
         cube.transform.scale = glm::vec3{0.5f, 0.5f, 0.5f};
         m_objects.push_back(std::move(cube));
     }
