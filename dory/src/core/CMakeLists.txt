@@ -8,6 +8,7 @@ set(CORE_HDRS
     core.h
     entry.h
     logger.h
+    timer.h
 )
 
 # add the files to the target

@@ -59,8 +59,6 @@ namespace DORY
 
         for (auto& object : objects)
         {
-            object.transform.rotation.x = glm::mod(object.transform.rotation.x + 0.01f, glm::two_pi<float>());
-            object.transform.rotation.y = glm::mod(object.transform.rotation.y + 0.02f, glm::two_pi<float>());
             PushConstantData3D push{};
             push.color = object.m_color;
             push.transform = projection_view_matrix * object.transform.mat4();

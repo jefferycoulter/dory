@@ -1,4 +1,6 @@
 #include "application.h"
+#include "logger.h"
+#include "timer.h"
 #include "renderer/camera.h"
 #include "systems/renderer_system.h"
 
@@ -24,10 +26,14 @@ namespace DORY
         Camera camera{};
         camera.SetViewDirection(glm::vec3(0.0f), glm::vec3(0.5f, 0.0f, 1.0f));
 
+        Timer timer{};
+
         // run the application
         while (!m_window.ShouldClose())
         {
             glfwPollEvents();
+
+            float frame_time = timer.GetElapsedTime();
 
             float aspect = m_renderer.GetSwapChainAspectRatio();
 
