@@ -89,5 +89,4 @@ namespace DORY
         m_view_matrix[3][1] = -glm::dot(v, position);
         m_view_matrix[3][2] = -glm::dot(w, position);
     }
-
 } // namespace DORY

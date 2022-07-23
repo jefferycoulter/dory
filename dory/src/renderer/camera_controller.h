@@ -33,7 +33,6 @@ namespace DORY
         private:
             KeyMap key_map{};
     }; // class CameraController
-
 } // namespace DORY
 
 #endif // DORY_CAMERA_CONTROLLER_INCL

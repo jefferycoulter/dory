@@ -35,5 +35,4 @@ namespace DORY
 	{
 		return GetMousePosition().y;
 	}
-
 } // namespace DORY

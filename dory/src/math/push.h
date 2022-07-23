@@ -20,7 +20,6 @@ namespace DORY
         glm::mat4 transform{1.0f};
         alignas(16) glm::vec3 color;
     };
-
 } // namespace DORY
 
 #endif // DORY_PUSH_CONSTANTS_INCL

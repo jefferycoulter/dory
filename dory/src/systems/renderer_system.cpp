@@ -1,4 +1,4 @@
-#include "renderer_system.h"
+#include "systems/renderer_system.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
@@ -68,5 +68,4 @@ namespace DORY
             object.m_model->Draw(command_buffer);
         }
     }
-
 } // namespace DORY

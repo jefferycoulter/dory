@@ -119,9 +119,7 @@ namespace DORY
             uint32_t m_current_image_index; // index of the current image in the swap chain
             bool m_frame_in_progress = false; // check whether a frame is in progress
             uint32_t m_current_frame_index; // current frame number
-
     }; // class Renderer
-
 } // namespace DORY
 
 #endif // DORY_RENDERER_INCL

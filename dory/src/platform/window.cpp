@@ -1,8 +1,8 @@
-#include "window.h"
+#include "core/logger.h"
 #include "events/keyboard_event.h"
 #include "events/mouse_event.h"
 #include "events/window_event.h"
-#include "core/logger.h"
+#include "platform/window.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -133,5 +133,4 @@ namespace DORY
 				_window->m_callback(event);
 			});
     }
-
 } // namespace DORY

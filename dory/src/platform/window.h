@@ -94,9 +94,7 @@ namespace DORY
             const char* m_title; // window title
             std::function<void(Event&)> m_callback; // callback function for events
             bool m_framebuffer_resized = false; // flag to indicate whether the framebuffer has been resized
-
     }; // class Window
-
 } // namespace DORY
 
 #endif // DORY_WINDOW_INCL

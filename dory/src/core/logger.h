@@ -1,7 +1,8 @@
 #ifndef DORY_LOGGER_INCL
 #define DORY_LOGGER_INCL
 
-#include "core.h"
+#include "core/core.h"
+
 #include <string>
 #include <sstream>
 #include <iostream>

@@ -53,9 +53,7 @@ namespace DORY
             Device& m_device; // the device that the renderer will use
             std::unique_ptr<Pipeline> m_pipeline; // the renderer's graphics pipeline
             VkPipelineLayout m_pipeline_layout; // the layout/specs for the renderer's graphics pipeline
-
     }; // class RendererSystem
-
 } // namespace DORY
 
 #endif // DORY_RENDERER_SYSTEM_INCL

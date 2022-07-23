@@ -61,7 +61,6 @@ namespace DORY
             };
         }
     }; // struct TransformObject
-
 } // namespace DORY
 
 #endif // DORY_TRANSFORM_INCL

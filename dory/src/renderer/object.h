@@ -1,7 +1,7 @@
 #ifndef DORY_OBJECT_INCL
 #define DORY_OBJECT_INCL
 
-#include "model.h" // includes glm
+#include "renderer/model.h" // includes glm
 #include "math/transforms.h"
 #include "utils/nocopy.h"
 
@@ -52,9 +52,7 @@ namespace DORY
 
         private: // members
             uint32_t m_id; // object id
-
     }; // class Object
-
 } // namespace DORY
 
 #endif // DORY_OBJECT_INCL

@@ -1,7 +1,7 @@
 #ifndef DORY_MODEL_INCL
 #define DORY_MODEL_INCL
 
-#include "device.h"
+#include "renderer/device.h"
 #include "utils/nocopy.h"
 
 #define GLM_FORCE_RADIANS
@@ -68,9 +68,7 @@ namespace DORY
             VkBuffer m_vertex_buffer;
             VkDeviceMemory m_vertex_buffer_memory;
             uint32_t m_vertex_count;
-            
     }; // class Model
-
 } // namespace DORY
 
 #endif // DORY_MODEL_INCL

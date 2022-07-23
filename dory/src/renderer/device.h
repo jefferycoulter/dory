@@ -281,9 +281,7 @@ namespace DORY
              * VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME is required to prevent warnings/errors on mac M1.
              */
              const std::vector<const char *> m_device_extensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME, VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME};
-    
     }; // class Device
-
 } // namepsace DORY
 
 #endif // DORY_DEVICE_INCL

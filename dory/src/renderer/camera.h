@@ -70,9 +70,7 @@ namespace DORY
         private:
             glm::mat4 m_projection_matrix{1.0f}; // projection transformation matrix
             glm::mat4 m_view_matrix{1.0f}; // camera transformation matrix
-
     }; // class Camera
-
 } // namespace DORY
 
 #endif // DORY_CAMERA_INCL

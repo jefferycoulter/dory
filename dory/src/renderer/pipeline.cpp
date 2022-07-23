@@ -1,4 +1,4 @@
-#include "pipeline.h"
+#include "renderer/pipeline.h"
 
 namespace DORY
 {
@@ -170,5 +170,4 @@ namespace DORY
         info._dynamic_state_info.dynamicStateCount = static_cast<uint32_t>(info._dynamic_states.size());
         info._dynamic_state_info.flags = 0;
     }
-
 } // namespace DORY

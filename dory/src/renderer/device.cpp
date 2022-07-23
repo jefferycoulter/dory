@@ -1,4 +1,4 @@
-#include "device.h"
+#include "renderer/device.h"
 
 // std headers
 #include <cstring>
@@ -600,5 +600,4 @@ namespace DORY {
             throw std::runtime_error("Failed to bind image memory!");
         }
     }
-
 }  // namespace DORY

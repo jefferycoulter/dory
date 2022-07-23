@@ -1,8 +1,8 @@
 #ifndef DORY_PIPELINE_INCL
 #define DORY_PIPELINE_INCL
 
-#include "device.h"
-#include "model.h"
+#include "renderer/device.h"
+#include "renderer/model.h"
 #include "utils/nocopy.h"
 #include "utils/utils.h"
 
@@ -87,10 +87,8 @@ namespace DORY
             Device& m_device; // reference to device in pipeline
             VkPipeline m_graphics_pipeline; // graphics pipeline handle in pipeline
             VkShaderModule m_vert_shader_module; // vertex shader module handle in pipeline
-            VkShaderModule m_frag_shader_module; // fragment shader module handle in pipeline
-            
+            VkShaderModule m_frag_shader_module; // fragment shader module handle in pipeline 
     }; // class Pipeline
-
 } // namespace DORY
 
 #endif // DORY_PIPELINE_INCL

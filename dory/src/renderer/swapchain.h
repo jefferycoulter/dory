@@ -1,7 +1,7 @@
 #ifndef DORY_SWAP_CHAIN_INCL
 #define DORY_SWAP_CHAIN_INCL
 
-#include "device.h"
+#include "renderer/device.h"
 #include "utils/nocopy.h"
 
 #include <vulkan/vulkan.h>
@@ -223,9 +223,7 @@ namespace DORY
             std::vector<VkFence> m_in_flight_fences;
             std::vector<VkFence> m_images_in_flight;
             size_t m_current_frame = 0;
-            
     }; // class SwapChain
-
 } // namespace DORY
 
 #endif // DORY_SWAP_CHAIN_INCL

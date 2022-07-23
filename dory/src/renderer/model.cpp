@@ -1,4 +1,4 @@
-#include "model.h"
+#include "renderer/model.h"
 
 #include <cassert>
 #include <cstring>
@@ -71,5 +71,4 @@ namespace DORY
         attribute_descriptions[1].offset = offsetof(Vertex, a_color);
         return attribute_descriptions;
     }
-
 } // namespace DORY

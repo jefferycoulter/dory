@@ -9,7 +9,6 @@
 #include "renderer/device.h"
 #include "renderer/object.h"
 #include "renderer/renderer.h"
-#include "renderer/swapchain.h"
 #include "utils/nocopy.h"
 
 #define GLM_FORCE_RADIANS
@@ -58,6 +57,10 @@ namespace DORY
              */
             void OnEvent(Event& event);
 
+            /**
+             * @brief static function used to get a reference to the application
+             * @return Application& 
+             */
             static Application& Get() { return *s_instance; }
 
             /**
@@ -73,12 +76,11 @@ namespace DORY
             void LoadObjects();
             
         private: // members
-            static Application* s_instance;
+            static Application* s_instance; // static instance of application
             Window m_window{WIDTH, HEIGHT, "Dory"}; // window object containing the application 
             Device m_device{m_window}; // device running the application
             Renderer m_renderer{m_window, m_device}; // renderer for the application
             std::vector<Object> m_objects; // the application's objects
-
     }; // class Application
 
     /**
@@ -87,7 +89,6 @@ namespace DORY
      * @return DORY::Application*
      */
     Application* Init(); 
-
 } // namespace DORY
 
 #endif // DORY_APPLICATION_INCL

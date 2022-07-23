@@ -1,7 +1,7 @@
 #ifndef DORY_CORE_INCL
 #define DORY_CORE_INCL
 
-#include "logger.h"
+#include "core/logger.h"
 #include <string>
 
 namespace DORY
@@ -110,7 +110,6 @@ namespace DORY
     STATIC_ASSERT(sizeof(signed long long) == 8, "Expected signed long long to be 8 bytes.");
     STATIC_ASSERT(sizeof(float) == 4, "Expected float to be 4 bytes.");
     STATIC_ASSERT(sizeof(double) == 8, "Expected double to be 8 bytes.");
-
 } // namespace DORY
 
 #endif // DORY_CORE_INCL

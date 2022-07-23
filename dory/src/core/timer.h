@@ -28,9 +28,7 @@ namespace DORY
 
         private:
             std::chrono::time_point<std::chrono::high_resolution_clock> m_start;
-
     }; // class Timer
-
 } // namespace DORY
 
 #endif // DORY_TIMER_INCL

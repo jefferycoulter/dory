@@ -1,6 +1,6 @@
-#include "application.h"
-#include "logger.h"
-#include "timer.h"
+#include "core/application.h"
+#include "core/logger.h"
+#include "core/timer.h"
 #include "renderer/camera.h"
 #include "renderer/camera_controller.h"
 #include "systems/renderer_system.h"
@@ -139,5 +139,4 @@ namespace DORY
         cube.transform.scale = glm::vec3{0.5f, 0.5f, 0.5f};
         m_objects.push_back(std::move(cube));
     }
-
 } // namespace DORY
