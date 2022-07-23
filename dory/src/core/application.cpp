@@ -2,6 +2,7 @@
 #include "logger.h"
 #include "timer.h"
 #include "renderer/camera.h"
+#include "renderer/camera_controller.h"
 #include "systems/renderer_system.h"
 
 #include <stdexcept>
@@ -9,8 +10,12 @@
 
 namespace DORY
 {
+    Application* Application::s_instance = nullptr;
+
     Application::Application()
-    {
+    {   
+        // assign the application instance to the static instance variable
+        s_instance = this;
         // set the window event callback to be the application's OnEvent method
         m_window.SetEventCallback([this](Event& event) { this->OnEvent(event); });
         LoadObjects();
@@ -24,7 +29,10 @@ namespace DORY
     {
         RendererSystem renderer_system{m_device, m_renderer.GetSwapChainRenderPass()};
         Camera camera{};
-        camera.SetViewDirection(glm::vec3(0.0f), glm::vec3(0.5f, 0.0f, 1.0f));
+        camera.SetViewTarget(glm::vec3(-1.0f, -2.0f, -2.0f), glm::vec3(0.0f, 0.0f, 2.5f));
+
+        auto viewer = Object::CreateObject();
+        CameraController camera_controller{};
 
         Timer timer{};
 
@@ -34,6 +42,8 @@ namespace DORY
             glfwPollEvents();
 
             float frame_time = timer.GetElapsedTime();
+            camera_controller.Move(m_window.GetWindow(), frame_time, viewer);
+            camera.SetViewZYX(viewer.transform.translation, viewer.transform.rotation);
 
             float aspect = m_renderer.GetSwapChainAspectRatio();
 

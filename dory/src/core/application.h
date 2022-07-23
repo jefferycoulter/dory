@@ -58,6 +58,14 @@ namespace DORY
              */
             void OnEvent(Event& event);
 
+            static Application& Get() { return *s_instance; }
+
+            /**
+             * @brief return the application's window
+             * @return GLFWwindow* 
+             */
+            GLFWwindow* GetApplicationWindow() const { return m_window.GetWindow(); }
+
         private: // methods
             /**
              * @brief load vertex data from a file and create a vertex buffer object
@@ -65,6 +73,7 @@ namespace DORY
             void LoadObjects();
             
         private: // members
+            static Application* s_instance;
             Window m_window{WIDTH, HEIGHT, "Dory"}; // window object containing the application 
             Device m_device{m_window}; // device running the application
             Renderer m_renderer{m_window, m_device}; // renderer for the application

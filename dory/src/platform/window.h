@@ -42,9 +42,23 @@ namespace DORY
              */
             VkExtent2D GetExtent() const { return {static_cast<uint32_t>(m_width), static_cast<uint32_t>(m_height)}; }
 
+            /**
+             * @brief check if the window has been resized
+             * @return true 
+             * @return false 
+             */
             bool WindowResized() { return m_framebuffer_resized; }
 
+            /**
+             * @brief once the window resize event is handled, set the flag to false.
+             */
             void ResetWindowResizedFlag() { m_framebuffer_resized = false; }
+
+            /**
+             * @brief return the GLFW window handle
+             * @return GLFWwindow* 
+             */
+            GLFWwindow* GetWindow() const { return m_window; }
 
             /**
              * @brief determine whether the window should close or not
