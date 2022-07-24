@@ -16,6 +16,9 @@ cmake -S %CURRENT_DIR% -B %CURRENT_DIR%\build ^
         -DCMAKE_MAKE_PROGRAM="C:\\Program Files (x86)\\GnuWin32\\bin\\make.exe" ^
         -DCMAKE_BUILD_TYPE=Debug
 
+pushd %CURRENT_DIR%
 cd build
 make
+popd
+
 pause

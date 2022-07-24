@@ -3,6 +3,11 @@
 
 #include <limits>   
 
+#ifdef _WIN64
+    #undef far
+    #undef near
+#endif
+
 namespace DORY
 {
     void Camera::SetOrthographicProjection(float left, float right, float bottom, float top, float near, float far) 
