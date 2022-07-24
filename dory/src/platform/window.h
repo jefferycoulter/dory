@@ -5,7 +5,9 @@
 #include "utils/nocopy.h"
 
 #define GLFW_INCLUDE_VULKAN
-#define VK_ENABLE_BETA_EXTENSIONS
+#ifdef __APPLE__
+    #define VK_ENABLE_BETA_EXTENSIONS
+#endif
 #include <GLFW/glfw3.h>
 
 #include <functional>

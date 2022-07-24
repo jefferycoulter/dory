@@ -118,7 +118,7 @@ namespace DORY
             std::vector<VkCommandBuffer> m_command_buffer; // renderer's command buffers
             uint32_t m_current_image_index; // index of the current image in the swap chain
             bool m_frame_in_progress = false; // check whether a frame is in progress
-            uint32_t m_current_frame_index; // current frame number
+            uint32_t m_current_frame_index = 0; // current frame number
     }; // class Renderer
 } // namespace DORY
 
