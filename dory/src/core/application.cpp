@@ -31,7 +31,7 @@ namespace DORY
         Camera camera{};
         camera.SetViewTarget(glm::vec3(-1.0f, -2.0f, -2.0f), glm::vec3(0.0f, 0.0f, 2.5f));
 
-        auto viewer = Object::CreateObject();
+        auto viewer = Object::CreateObject(); // this holds the camera
         CameraController camera_controller{};
 
         Timer timer{};
@@ -68,75 +68,13 @@ namespace DORY
         DTRACE("%s \n", event.toString().c_str());
     }
 
-    // temporary helper function, creates a 1x1x1 cube centered at offset
-    std::unique_ptr<Model> CreateCube(Device& device, glm::vec3 offset)
-    {
-        std::vector<Model::Vertex> vertices{
-
-            // left face (white)
-            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
-            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
-            {{-.5f, -.5f, .5f}, {.9f, .9f, .9f}},
-            {{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
-            {{-.5f, .5f, -.5f}, {.9f, .9f, .9f}},
-            {{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
-
-            // right face (yellow)
-            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
-            {{.5f, -.5f, .5f}, {.8f, .8f, .1f}},
-            {{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
-            {{.5f, .5f, -.5f}, {.8f, .8f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .8f, .1f}},
-
-            // top face (orange, remember y axis points down)
-            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-            {{-.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-            {{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-            {{.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
-            {{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
-
-            // bottom face (red)
-            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
-            {{-.5f, .5f, .5f}, {.8f, .1f, .1f}},
-            {{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-            {{.5f, .5f, -.5f}, {.8f, .1f, .1f}},
-            {{.5f, .5f, .5f}, {.8f, .1f, .1f}},
-
-            // nose face (blue)
-            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-            {{-.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-            {{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-            {{.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
-            {{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
-
-            // tail face (green)
-            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-            {{-.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-            {{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-            {{.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
-            {{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
-        };
-
-        for (auto& v : vertices) 
-        {
-            v.a_position += offset;
-        }
-
-        return std::make_unique<Model>(device, vertices);
-    }
-
     void Application::LoadObjects()
-    {
-        std::shared_ptr<Model> cube_model = CreateCube(m_device, glm::vec3{0.0f, 0.0f, 0.0f});
-        auto cube = Object::CreateObject();
-        cube.m_model = cube_model;
-        cube.transform.translation = glm::vec3{0.0f, 0.0f, 2.5f};
-        cube.transform.scale = glm::vec3{0.5f, 0.5f, 0.5f};
-        m_objects.push_back(std::move(cube));
+    {   
+        std::shared_ptr<Model> model = Model::LoadModelFromFile(m_device, "assets/models/stanford_bunny.obj");
+        auto object = Object::CreateObject();
+        object.m_model = model;
+        object.transform.translation = glm::vec3{0.0f, 0.0f, 2.5f};
+        object.transform.scale = glm::vec3{0.5f, 0.5f, 0.5f};
+        m_objects.push_back(std::move(object));
     }
 } // namespace DORY

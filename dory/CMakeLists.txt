@@ -21,6 +21,7 @@ target_include_directories(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 
         ${Vulkan_INCLUDE_DIRS}
-        ${CMAKE_SOURCE_DIR}/ext/GLFW/include 
-        ${CMAKE_SOURCE_DIR}/ext/glm  
+        ${CMAKE_SOURCE_DIR}/extern/GLFW/include 
+        ${CMAKE_SOURCE_DIR}/extern/glm
+        ${CMAKE_SOURCE_DIR}/extern/tinyobjloader
 )

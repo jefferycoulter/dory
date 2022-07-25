@@ -15,4 +15,4 @@ target_link_libraries(${PROJECT_NAME} PUBLIC dory)
 # add the shaders to the test output directory
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                       ${CMAKE_SOURCE_DIR}/assets/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets/shaders)
+                       ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets)

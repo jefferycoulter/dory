@@ -10,7 +10,7 @@
 namespace DORY
 {   
     /**
-     * @brief basic class to represent a graphical object with proerties (a game entity).  will probably
+     * @brief basic class to represent a graphical object with properties (a game entity).  will probably
      * switch to something like entt for this in the future, but this is a simple way to get things working.
      */
     class Object //: public NoCopy

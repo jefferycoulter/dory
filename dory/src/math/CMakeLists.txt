@@ -3,6 +3,7 @@ set(CORE_SRCS
 
 )
 set(CORE_HDRS
+    hash.h
     push.h
     transforms.h
 )

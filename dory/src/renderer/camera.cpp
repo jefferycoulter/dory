@@ -13,9 +13,9 @@ namespace DORY
     void Camera::SetOrthographicProjection(float left, float right, float bottom, float top, float near, float far) 
     {
         m_projection_matrix = glm::mat4{1.0f};
-        m_projection_matrix[0][0] = 2.f / (right - left);
-        m_projection_matrix[1][1] = 2.f / (bottom - top);
-        m_projection_matrix[2][2] = 1.f / (far - near);
+        m_projection_matrix[0][0] = 2.0f / (right - left);
+        m_projection_matrix[1][1] = 2.0f / (bottom - top);
+        m_projection_matrix[2][2] = 1.0f / (far - near);
         m_projection_matrix[3][0] = -(right + left) / (right - left);
         m_projection_matrix[3][1] = -(bottom + top) / (bottom - top);
         m_projection_matrix[3][2] = -near / (far - near);
@@ -28,10 +28,10 @@ namespace DORY
 
         const float tan_half_fov = tan(fov / 2.f);
         m_projection_matrix = glm::mat4{0.0f};
-        m_projection_matrix[0][0] = 1.f / (aspect * tan_half_fov);
-        m_projection_matrix[1][1] = 1.f / (tan_half_fov);
+        m_projection_matrix[0][0] = 1.0f / (aspect * tan_half_fov);
+        m_projection_matrix[1][1] = -1.0f / (tan_half_fov); // flip y axis by multiplying by -1.0f
         m_projection_matrix[2][2] = far / (far - near);
-        m_projection_matrix[2][3] = 1.f;
+        m_projection_matrix[2][3] = 1.0f;
         m_projection_matrix[3][2] = -(far * near) / (far - near);
     }
 
