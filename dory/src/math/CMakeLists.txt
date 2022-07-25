@@ -1,6 +1,6 @@
 # specify source and header files
 set(CORE_SRCS
-
+    transforms.cpp
 )
 set(CORE_HDRS
     hash.h

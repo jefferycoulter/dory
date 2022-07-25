@@ -60,8 +60,9 @@ namespace DORY
         for (auto& object : objects)
         {
             PushConstantData3D push{};
-            push.color = object.m_color;
-            push.transform = projection_view_matrix * object.transform.mat4();
+            auto model_matrix = object.transform.Matrix();
+            push.transform = projection_view_matrix * model_matrix;
+            push.normal_matrix = object.transform.NormalMatrix();
 
             vkCmdPushConstants(command_buffer, m_pipeline_layout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(PushConstantData3D), &push);
             object.m_model->Bind(command_buffer);

@@ -18,7 +18,7 @@ namespace DORY
     struct PushConstantData3D
     {
         glm::mat4 transform{1.0f};
-        alignas(16) glm::vec3 color;
+        glm::mat4 normal_matrix{1.0f};
     };
 } // namespace DORY
 

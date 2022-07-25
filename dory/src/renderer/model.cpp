@@ -135,7 +135,7 @@ namespace DORY
 
     std::vector<VkVertexInputAttributeDescription> Model::Vertex::GetAttributeDescriptions()
     {
-        std::vector<VkVertexInputAttributeDescription> attribute_descriptions(2);
+        std::vector<VkVertexInputAttributeDescription> attribute_descriptions(4);
         attribute_descriptions[0].binding = 0;
         attribute_descriptions[0].location = 0;
         attribute_descriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
@@ -145,6 +145,17 @@ namespace DORY
         attribute_descriptions[1].location = 1;
         attribute_descriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
         attribute_descriptions[1].offset = offsetof(Vertex, a_color);
+
+        attribute_descriptions[2].binding = 0;
+        attribute_descriptions[2].location = 2;
+        attribute_descriptions[2].format = VK_FORMAT_R32G32B32_SFLOAT;
+        attribute_descriptions[2].offset = offsetof(Vertex, a_normal);
+
+        attribute_descriptions[3].binding = 0;
+        attribute_descriptions[3].location = 3;
+        attribute_descriptions[3].format = VK_FORMAT_R32G32_SFLOAT;
+        attribute_descriptions[3].offset = offsetof(Vertex, a_tex_coords);
+
         return attribute_descriptions;
     }
 } // namespace DORY

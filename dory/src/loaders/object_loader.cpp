@@ -55,19 +55,11 @@ namespace DORY
                         attrib.vertices[3 * index.vertex_index + 2]  // z
                     };
 
-                    auto color_index = 3 * index.vertex_index + 2;
-                    if (color_index < attrib.colors.size())
-                    {
-                        vertex.a_color = {
-                            attrib.colors[color_index -2], // r
-                            attrib.colors[color_index -1], // g
-                            attrib.colors[color_index - 0] // b
-                        };
-                    }
-                    else
-                    {
-                        vertex.a_color = {1.0f, 1.0f, 1.0f};
-                    }
+                    vertex.a_color = {
+                        attrib.colors[index.vertex_index + 0], // r
+                        attrib.colors[index.vertex_index + 1], // g
+                        attrib.colors[index.vertex_index + 2] // b
+                    };
                 }
 
                 // specify the normal of the vertex
