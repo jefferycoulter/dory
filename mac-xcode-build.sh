@@ -19,10 +19,7 @@ scripts/compile-shaders-mac.sh
 echo "Shaders compiled."
 
 cd $DIR/build && mkdir xcode
-
 cd $DIR/build/xcode
-
-cmake -G "Xcode" ../..
 
 # run cmake
 cmake -G "Xcode" ../..
