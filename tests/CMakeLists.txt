@@ -1,0 +1,2 @@
+add_subdirectory(test_logger)
+add_subdirectory(test_application)
