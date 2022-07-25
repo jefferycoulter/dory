@@ -19,10 +19,10 @@ scripts/compile-shaders-mac.sh
 echo "Shaders compiled."
 
 # run cmake
-cmake -S $DIR -B $DIR/build 
-    -G "Unix Makefiles"
-    -DCMAKE_CXX_COMPILER=clang++
-    -DCMAKE_C_COMPILER=clang
+cmake -S $DIR -B $DIR/build \
+    -G "Unix Makefiles" \
+    -DCMAKE_CXX_COMPILER=clang++ \
+    -DCMAKE_C_COMPILER=clang \
     -DCMAKE_BUILD_TYPE=Debug
 
 # run make

@@ -58,14 +58,14 @@ namespace DORY
          * @param file the path and name of the code file containing the failure
          * @param line the line number in the file where the failure occurred
          */
-        void assertion_failure(const char* expression, const char* message, const char* file, signed int line);
+        void AssertionFailure(const char* expression, const char* message, const char* file, signed int line);
 
         /**
          * @brief asserts the provided expression to be true, and logs a failure if not. then triggers
          * a break point
          * @param expr the expression to be evaluated.
          */
-        #define DASSERT(expr) { if (expr) {} else { assertion_failure(#expr, "", __FILE__, __LINE__); debug_break(); } }
+        #define DASSERT(expr) { if (expr) {} else { AssertionFailure(#expr, "", __FILE__, __LINE__); debug_break(); } }
 
         /**
          * @brief asserts the provided expression to be true, and logs a failure if not. then triggers
@@ -73,7 +73,7 @@ namespace DORY
          * @param expr the expression to be evaluated.
          * @param message the message to be reported with the failure
          */
-        #define DASSERT_MSG(expr, message) { if (expr) {} else { assertion_failure(#expr, message, __FILE__, __LINE__); debug_break(); } }
+        #define DASSERT_MSG(expr, message) { if (expr) {} else { AssertionFailure(#expr, message, __FILE__, __LINE__); debug_break(); } }
 
         #if defined(_DEBUG) || defined(DEBUG)
             /**
@@ -81,7 +81,7 @@ namespace DORY
              * a break point
              * @param expr the expression to be evaluated.
              */
-            #define DASSERT_DEBUG(expr) { if (expr) {} else { assertion_failure(#expr, "", __FILE__, __LINE__); debug_break(); } }
+            #define DASSERT_DEBUG(expr) { if (expr) {} else { AssertionFailure(#expr, "", __FILE__, __LINE__); debug_break(); } }
         #else // not debug mode
             #define KASSERT_DEBUG(expr)
         #endif
