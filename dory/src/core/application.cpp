@@ -65,7 +65,7 @@ namespace DORY
 
     void Application::OnEvent(Event& event)
     {
-        DTRACE("%s \n", event.toString().c_str());
+        DTRACE("%s \n", event.ToString().c_str());
     }
 
     void Application::LoadObjects()

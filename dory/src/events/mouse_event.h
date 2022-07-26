@@ -15,7 +15,7 @@ namespace DORY
             inline float getX() const { return m_X; }
             inline float getY() const { return m_Y; }
 
-            std::string toString() const override
+            std::string ToString() const override
             {
                 std::stringstream ss;
                 ss << "MouseMoveEvent: " << m_X << ", " << m_Y;
@@ -38,7 +38,7 @@ namespace DORY
             float GetXOffset() const { return m_XOffset; }
             float GetYOffset() const { return m_YOffset; }
 
-            std::string toString() const override
+            std::string ToString() const override
             {
                 std::stringstream ss;
                 ss << "MouseScrolledEvent: " << GetXOffset() << ", " << GetYOffset();
@@ -71,7 +71,7 @@ namespace DORY
             MousePressedEvent(int button)
                 : MouseEvent(button) {}
 
-            std::string toString() const override
+            std::string ToString() const override
             {
                 std::stringstream ss;
                 ss << "MouseButtonPressedEvent: " << m_Button;
@@ -88,7 +88,7 @@ namespace DORY
             MouseReleasedEvent(int button)
                 : MouseEvent(button) {}
 
-            std::string toString() const override
+            std::string ToString() const override
             {
                 std::stringstream ss;
                 ss << "MouseReleasedEvent: " << m_Button;

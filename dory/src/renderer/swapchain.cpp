@@ -53,7 +53,7 @@ namespace DORY
         }
 
         // clean up depth resources
-        for (int i = 0; i < m_depth_images.size(); i++)
+        for (size_t i = 0; i < m_depth_images.size(); i++)
         {
             vkDestroyImageView(m_device.GetDevice(), m_depth_image_views[i], nullptr);
             vkDestroyImage(m_device.GetDevice(), m_depth_images[i], nullptr);
@@ -326,7 +326,7 @@ namespace DORY
         m_depth_image_memories.resize(GetImageCount());
         m_depth_image_views.resize(GetImageCount());
 
-        for (int i = 0; i < m_depth_images.size(); i++)
+        for (size_t i = 0; i < m_depth_images.size(); i++)
         {
             VkImageCreateInfo image_info{};
             image_info.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;

@@ -26,7 +26,7 @@ namespace DORY
 
                 inline int GetRepeatCount() const { return m_rep_count; }
 
-                std::string toString()
+                std::string ToString() const override
                 {
                     std::stringstream ss;
                     ss << "KeyPressed: " << m_keycode << " (" << m_rep_count << "repeats)";
@@ -44,7 +44,7 @@ namespace DORY
                 KeyReleasedEvent(int keycode)
                     : KeyEvent(keycode) {}
 
-                std::string toString() const override
+                std::string ToString() const override
                 {
                     std::stringstream ss;
                     ss << "KeyRelease: " << m_keycode;

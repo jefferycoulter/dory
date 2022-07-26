@@ -2,7 +2,7 @@ project(dory)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/dory)
 
-add_library(${PROJECT_NAME} dory.h)
+add_library(${PROJECT_NAME} include/dory.h)
 
 add_subdirectory(src)
 

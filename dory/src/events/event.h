@@ -35,7 +35,7 @@ namespace DORY
 
             virtual EventType GetEventType() const = 0;
             virtual const char* GetName() const = 0;
-            virtual std::string toString() const { return GetName(); }
+            virtual std::string ToString() const { return GetName(); }
 
             bool m_handled = false; // determine whether event has been handled (should not propogate further)
 

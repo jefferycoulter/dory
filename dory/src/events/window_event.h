@@ -15,7 +15,7 @@ namespace DORY
             unsigned int GetWidth() const { return m_Width; }
             unsigned int GetHeight() const { return m_Height; }
 
-            std::string toString() const override
+            std::string ToString() const override
             {
                 std::stringstream ss;
                 //printf("WindowResizeEvent: %d, %d", m_Width, m_Height);
