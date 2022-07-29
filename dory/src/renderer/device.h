@@ -161,7 +161,7 @@ namespace DORY
              */
             void CreateImageWithInfo(const VkImageCreateInfo &image_info, VkMemoryPropertyFlags properties, VkImage &image, VkDeviceMemory &image_memory);
 
-            VkPhysicalDeviceProperties _properties; // physical device properties in device
+            VkPhysicalDeviceProperties m_properties; // physical device properties in device
 
         private: // methods
             /**

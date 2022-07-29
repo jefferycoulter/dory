@@ -1,8 +1,10 @@
 # specify source and header files
-set(RENDERER_SRCS 
+set(RENDERER_SRCS
+    buffer.cpp
     camera.cpp
     camera_controller.cpp
     device.cpp
+    descriptor.cpp
     model.cpp
     pipeline.cpp
     renderer.cpp
@@ -10,8 +12,11 @@ set(RENDERER_SRCS
 )
 
 set(RENDERER_HDRS 
+    buffer.h
     camera.h
     camera_controller.h
+    data.h
+    descriptor.h
     device.h
     model.h
     object.h

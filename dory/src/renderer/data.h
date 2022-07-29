@@ -1,5 +1,5 @@
-#ifndef DORY_PUSH_CONSTANTS_INCL
-#define DORY_PUSH_CONSTANTS_INCL
+#ifndef DORY_DATA_INCL
+#define DORY_DATA_INCL
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
@@ -13,13 +13,19 @@ namespace DORY
         glm::mat2 transform{1.0f};
         glm::vec2 offset;
         alignas(16) glm::vec3 color;
-    };
+    }; // struct PushConstantData2D
 
     struct PushConstantData3D
     {
         glm::mat4 transform{1.0f};
         glm::mat4 normal_matrix{1.0f};
-    };
+    };   // struct PushConstantData3D
+
+    struct UniformBufferObject
+    {
+        glm::mat4 projection{1.0f};
+        glm::vec3 light_direction = glm::normalize(glm::vec3(1.0f, 3.0f, -1.0f));
+    }; // struct UBO
 } // namespace DORY
 
-#endif // DORY_PUSH_CONSTANTS_INCL
+#endif // DORY_DATA_INCL

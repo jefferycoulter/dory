@@ -2,6 +2,7 @@
 #define DORY_MODEL_INCL
 
 #include "renderer/device.h"
+#include "renderer/buffer.h"
 #include "utils/nocopy.h"
 
 #define GLM_FORCE_RADIANS
@@ -100,12 +101,10 @@ namespace DORY
 
         private: // members
             Device &m_device; // device to create the model on
-            VkBuffer m_vertex_buffer; // vertex buffer
-            VkDeviceMemory m_vertex_buffer_memory; // vertex buffer memory
+            std::unique_ptr<Buffer> m_vertex_buffer; // vertex buffer
             uint32_t m_vertex_count; // number of vertices in the buffer
 
-            VkBuffer m_index_buffer; // index buffer
-            VkDeviceMemory m_index_buffer_memory; // index buffer memory
+            std::unique_ptr<Buffer> m_index_buffer; // index buffer
             uint32_t m_index_count; // number of indices in the buffer
             bool m_has_indices = false; // whether the model has index buffer
             

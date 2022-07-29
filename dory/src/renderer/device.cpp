@@ -17,7 +17,7 @@ namespace DORY {
                                                         const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
                                                         void *pUserData)
     {
-        std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+        std::cerr << "validation layer: " << pCallbackData->pMessage << "\n";
 
         return VK_FALSE;
     }
@@ -135,7 +135,7 @@ namespace DORY {
         {
             throw std::runtime_error("Failed to find GPUs with Vulkan support!");
         }
-        std::cout << "Device count: " << device_count << std::endl;
+        std::cout << "Device count: " << device_count << "\n";
         std::vector<VkPhysicalDevice> devices(device_count);
         vkEnumeratePhysicalDevices(m_instance, &device_count, devices.data());
 
@@ -153,8 +153,8 @@ namespace DORY {
             throw std::runtime_error("Failed to find a suitable GPU!");
         }
 
-        vkGetPhysicalDeviceProperties(m_physical_device, &_properties);
-        std::cout << "physical device: " << _properties.deviceName << std::endl;
+        vkGetPhysicalDeviceProperties(m_physical_device, &m_properties);
+        std::cout << "physical device: " << m_properties.deviceName << "\n";
     }
 
     void Device::CreateLogicalDevice()
@@ -330,19 +330,19 @@ namespace DORY {
         std::vector<VkExtensionProperties> extensions(extension_count);
         vkEnumerateInstanceExtensionProperties(nullptr, &extension_count, extensions.data());
 
-        std::cout << "available extensions:" << std::endl;
+        std::cout << "available extensions:" << "\n";
         std::unordered_set<std::string> available;
         for (const auto &extension : extensions)
         {
-            std::cout << "\t" << extension.extensionName << std::endl;
+            std::cout << "\t" << extension.extensionName << "\n";
             available.insert(extension.extensionName);
         }
 
-        std::cout << "required extensions:" << std::endl;
+        std::cout << "required extensions:" << "\n";
         auto required_extensions = GetRequiredExtensions();
         for (const auto &required : required_extensions)
         {
-            std::cout << "\t" << required << std::endl;
+            std::cout << "\t" << required << "\n";
             if (available.find(required) == available.end())
             {
                 throw std::runtime_error("Missing required glfw extension");

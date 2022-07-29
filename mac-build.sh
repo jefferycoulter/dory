@@ -21,8 +21,8 @@ echo "Shaders compiled."
 # run cmake
 cmake -S $DIR -B $DIR/build \
     -G "Unix Makefiles" \
-    -DCMAKE_CXX_COMPILER=clang++ \
-    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_C_COMPILER="/usr/bin/clang" \
+    -DCMAKE_CXX_COMPILER="/usr/bin/clang++" \
     -DCMAKE_BUILD_TYPE=Debug
 
 # run make

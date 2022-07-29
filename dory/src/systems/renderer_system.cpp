@@ -1,3 +1,4 @@
+#include "renderer/data.h"
 #include "systems/renderer_system.h"
 
 #include <glm/glm.hpp>
@@ -49,6 +50,16 @@ namespace DORY
         pipeline_config._render_pass = render_pass;
         pipeline_config._pipeline_layout = m_pipeline_layout;
         m_pipeline = std::make_unique<Pipeline>(m_device, pipeline_config, "assets/shaders/shader.vert.spv", "assets/shaders/shader.frag.spv");
+    }
+
+    void RendererSystem::CreateDescriptorSetLayout()
+    {
+
+    }
+
+    void RendererSystem::CreateDescriptorPool(const std::vector<VkDescriptorPoolSize> &pool_sizes)
+    {
+        m_global_pool = std::make_unique<DescriptorPool>(m_device, SwapChain::MAX_FRAMES_IN_FLIGHT, 0, pool_sizes);
     }
 
     void RendererSystem::RenderObjects(VkCommandBuffer command_buffer, std::vector<Object>& objects, const Camera& camera)

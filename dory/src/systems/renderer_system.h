@@ -2,8 +2,8 @@
 #define DORY_RENDERER_SYSTEM_INCL
 
 #include "core/core.h"
-#include "math/push.h"
 #include "renderer/camera.h"
+#include "renderer/descriptor.h"
 #include "renderer/device.h"
 #include "renderer/object.h"
 #include "renderer/pipeline.h"
@@ -40,6 +40,18 @@ namespace DORY
 
         private: // methods
             /**
+             * @brief create a descriptor set Layout
+             * @todo implement this
+             */
+            void CreateDescriptorSetLayout();
+
+            /**
+             * @brief create a descriptor pool 
+             * @todo implement this
+             */
+            void CreateDescriptorPool(const std::vector<VkDescriptorPoolSize> &pool_sizes);
+            
+            /**
              * @brief initialize the layout for the graphcis pipeline that the renderer will use
              */
             void CreatePipelineLayout();
@@ -53,6 +65,7 @@ namespace DORY
             Device& m_device; // the device that the renderer will use
             std::unique_ptr<Pipeline> m_pipeline; // the renderer's graphics pipeline
             VkPipelineLayout m_pipeline_layout; // the layout/specs for the renderer's graphics pipeline
+            std::unique_ptr<DescriptorPool> m_global_pool{}; // the global descriptor pool for the renderer
     }; // class RendererSystem
 } // namespace DORY
 

@@ -1,7 +1,9 @@
 #include "core/application.h"
 #include "core/logger.h"
 #include "core/timer.h"
+#include "renderer/buffer.h"
 #include "renderer/camera.h"
+#include "renderer/data.h"
 #include "renderer/camera_controller.h"
 #include "systems/renderer_system.h"
 
@@ -27,13 +29,22 @@ namespace DORY
     
     void Application::Run()
     {
+        std::vector<std::unique_ptr<Buffer>> ubo_buffers(SwapChain::MAX_FRAMES_IN_FLIGHT);
+        for (size_t i = 0; i < ubo_buffers.size(); i++)
+        {
+            ubo_buffers[i] = std::make_unique<Buffer>(  m_device, 
+                                                        sizeof(UniformBufferObject), 
+                                                        1,
+                                                        VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+                                                        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+            ubo_buffers[i]->Map();
+        }
+
         RendererSystem renderer_system{m_device, m_renderer.GetSwapChainRenderPass()};
         Camera camera{};
         camera.SetViewTarget(glm::vec3(-1.0f, -2.0f, -2.0f), glm::vec3(0.0f, 0.0f, 2.5f));
-
         auto viewer = Object::CreateObject(); // this holds the camera
         CameraController camera_controller{};
-
         Timer timer{};
 
         // run the application
@@ -53,6 +64,14 @@ namespace DORY
             // BeginFrame() returns nullptr if the swap chain is not ready (i.e. the window is being resized, etc.)
             if (auto command_buffer = m_renderer.BeginFrame())
             {
+                uint32_t frame_index = m_renderer.GetCurrentFrameIndex();
+                // update the uniform buffer object
+                UniformBufferObject ubo{};
+                ubo.projection = camera.GetView();
+                ubo_buffers[frame_index]->WriteToIndex(&ubo, frame_index);
+                ubo_buffers[frame_index]->Flush();
+
+                // render the objects
                 m_renderer.BeginSwapChainRenderPass(command_buffer);
                 renderer_system.RenderObjects(command_buffer, m_objects, camera);
                 m_renderer.EndSwapChainRenderPass(command_buffer);

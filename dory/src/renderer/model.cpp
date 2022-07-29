@@ -21,13 +21,6 @@ namespace DORY
 
     Model::~Model()
     {
-        vkDestroyBuffer(m_device.GetDevice(), m_vertex_buffer, nullptr);
-        vkFreeMemory(m_device.GetDevice(), m_vertex_buffer_memory, nullptr);
-        if (m_has_indices)
-        {
-            vkDestroyBuffer(m_device.GetDevice(), m_index_buffer, nullptr);
-            vkFreeMemory(m_device.GetDevice(), m_index_buffer_memory, nullptr);
-        }
     }
 
     std::unique_ptr<Model> Model::LoadModelFromFile(Device &device, const std::string& path)
@@ -44,77 +37,65 @@ namespace DORY
         m_vertex_count = static_cast<uint32_t>(vertices.size());
         assert(m_vertex_count >= 3 && "Model must have at least 3 vertices");
         VkDeviceSize buffer_size = sizeof(vertices[0]) * m_vertex_count;
+        uint32_t vertex_size = sizeof(vertices[0]);
 
         // stage the vertex data to the device local memory for faster access
-        VkBuffer staging_buffer;
-        VkDeviceMemory staging_buffer_memory;
-        m_device.CreateBuffer(buffer_size, 
-                            VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
-                            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, 
-                            staging_buffer, 
-                            staging_buffer_memory);
+        // note: this is declared on the stack and will be destroyed when the function returns
+        Buffer staging_buffer(  m_device,
+                                vertex_size, 
+                                m_vertex_count, 
+                                VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
+                                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
         // take data from host CPU and copy it to the stageing buffer on GPU
-        void *data;
-        vkMapMemory(m_device.GetDevice(), staging_buffer_memory, 0, buffer_size, 0, &data);
-        memcpy(data, vertices.data(), static_cast<size_t>(buffer_size));
-        vkUnmapMemory(m_device.GetDevice(), staging_buffer_memory);
+        staging_buffer.Map();
+        staging_buffer.WriteToBuffer((void*)vertices.data());
 
-        m_device.CreateBuffer(buffer_size, 
-                            VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, 
-                            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, 
-                            m_vertex_buffer, 
-                            m_vertex_buffer_memory);
+        m_vertex_buffer = std::make_unique<Buffer>( m_device, 
+                                                    vertex_size, 
+                                                    m_vertex_count, 
+                                                    VK_BUFFER_USAGE_VERTEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, 
+                                                    VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
         // copy the data from the staging buffer to the vertex buffer
-        m_device.CopyBuffer(staging_buffer, m_vertex_buffer, buffer_size);
-
-        vkDestroyBuffer(m_device.GetDevice(), staging_buffer, nullptr);
-        vkFreeMemory(m_device.GetDevice(), staging_buffer_memory, nullptr);
+        m_device.CopyBuffer(staging_buffer.GetBuffer(), m_vertex_buffer->GetBuffer(), buffer_size);
     }
 
     void Model::CreateIndexBuffers(const std::vector<uint32_t> &indices)
     {
         VkDeviceSize buffer_size = sizeof(indices[0]) * m_index_count;
+        uint32_t index_size = sizeof(indices[0]);
 
         // stage the index data to the device local memory for faster access
-        VkBuffer staging_buffer;
-        VkDeviceMemory staging_buffer_memory;
-        m_device.CreateBuffer(buffer_size, 
-                            VK_IMAGE_USAGE_TRANSFER_SRC_BIT, 
-                            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, 
-                            staging_buffer,
-                            staging_buffer_memory);
+        Buffer staging_buffer(  m_device,
+                                index_size, 
+                                m_index_count, 
+                                VK_BUFFER_USAGE_TRANSFER_SRC_BIT, 
+                                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
 
-        // take data from host CPU and copy it to the staging buffer on GPU
-        void *data;
-        vkMapMemory(m_device.GetDevice(), staging_buffer_memory, 0, buffer_size, 0, &data);
-        memcpy(data, indices.data(), static_cast<size_t>(buffer_size));
-        vkUnmapMemory(m_device.GetDevice(), staging_buffer_memory);
+        // take data from host CPU and copy it to the stageing buffer on GPU
+        staging_buffer.Map();
+        staging_buffer.WriteToBuffer((void*)indices.data());
 
-        // create space on device for index data
-        m_device.CreateBuffer(buffer_size, 
-                            VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, 
-                            VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, 
-                            m_index_buffer,
-                            m_index_buffer_memory);
+        m_index_buffer = std::make_unique<Buffer>(  m_device, 
+                                                    index_size, 
+                                                    m_index_count, 
+                                                    VK_BUFFER_USAGE_INDEX_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT, 
+                                                    VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
         // copy the data from the staging buffer to the index buffer
-        m_device.CopyBuffer(staging_buffer, m_index_buffer, buffer_size);
-
-        vkDestroyBuffer(m_device.GetDevice(), staging_buffer, nullptr);
-        vkFreeMemory(m_device.GetDevice(), staging_buffer_memory, nullptr);
+        m_device.CopyBuffer(staging_buffer.GetBuffer(), m_index_buffer->GetBuffer(), buffer_size);
     }
 
     void Model::Bind(VkCommandBuffer command_buffer)
     {
-        VkBuffer buffers[] = { m_vertex_buffer };
+        VkBuffer buffers[] = { m_vertex_buffer->GetBuffer() };
         VkDeviceSize offsets[] = { 0 };
         vkCmdBindVertexBuffers(command_buffer, 0, 1, buffers, offsets);
 
         if (m_has_indices)
         {
-            vkCmdBindIndexBuffer(command_buffer, m_index_buffer, 0, VK_INDEX_TYPE_UINT32);
+            vkCmdBindIndexBuffer(command_buffer, m_index_buffer->GetBuffer(), 0, VK_INDEX_TYPE_UINT32);
         }
     }
 

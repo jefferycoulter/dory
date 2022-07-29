@@ -4,7 +4,6 @@
 #include "core/core.h"
 #include "events/event.h"
 #include "events/window_event.h"
-#include "math/push.h"
 #include "platform/window.h"
 #include "renderer/device.h"
 #include "renderer/object.h"
