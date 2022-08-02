@@ -28,15 +28,15 @@ namespace DORY
         vkDestroyDescriptorSetLayout(m_device.GetDevice(), m_descriptor_set_layout, nullptr);
     }
 
-    DescriptorSetLayout::Builder& DescriptorSetLayout::Builder::AddBinding( uint32_t binding, VkDescriptorType descriptorType, VkShaderStageFlags stageFlags, uint32_t count) 
+    DescriptorSetLayout::Builder& DescriptorSetLayout::Builder::AddBinding( uint32_t binding, VkDescriptorType descriptor_type, VkShaderStageFlags stage_flags, uint32_t count) 
     {
         DASSERT_MSG(m_bindings.count(binding) == 0, "Binding already in use");
-        VkDescriptorSetLayoutBinding layoutBinding{};
-        layoutBinding.binding = binding;
-        layoutBinding.descriptorType = descriptorType;
-        layoutBinding.descriptorCount = count;
-        layoutBinding.stageFlags = stageFlags;
-        m_bindings[binding] = layoutBinding;
+        VkDescriptorSetLayoutBinding layout_binding{};
+        layout_binding.binding = binding;
+        layout_binding.descriptorType = descriptor_type;
+        layout_binding.descriptorCount = count;
+        layout_binding.stageFlags = stage_flags;
+        m_bindings[binding] = layout_binding;
         return *this;
     }
 
@@ -45,17 +45,17 @@ namespace DORY
         return std::make_unique<DescriptorSetLayout>(m_device, m_bindings);
     }
 
-    DescriptorPool::DescriptorPool(Device &device, uint32_t maxSets, VkDescriptorPoolCreateFlags poolFlags, const std::vector<VkDescriptorPoolSize> &poolSizes)
+    DescriptorPool::DescriptorPool(Device &device, uint32_t max_sets, VkDescriptorPoolCreateFlags pool_flags, const std::vector<VkDescriptorPoolSize> &pool_sizes)
     : m_device{device} 
     {
-        VkDescriptorPoolCreateInfo descriptorPoolInfo{};
-        descriptorPoolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-        descriptorPoolInfo.poolSizeCount = static_cast<uint32_t>(poolSizes.size());
-        descriptorPoolInfo.pPoolSizes = poolSizes.data();
-        descriptorPoolInfo.maxSets = maxSets;
-        descriptorPoolInfo.flags = poolFlags;
+        VkDescriptorPoolCreateInfo descriptor_pool_info{};
+        descriptor_pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+        descriptor_pool_info.poolSizeCount = static_cast<uint32_t>(pool_sizes.size());
+        descriptor_pool_info.pPoolSizes = pool_sizes.data();
+        descriptor_pool_info.maxSets = max_sets;
+        descriptor_pool_info.flags = pool_flags;
 
-        if (vkCreateDescriptorPool(m_device.GetDevice(), &descriptorPoolInfo, nullptr, &m_descriptor_pool) != VK_SUCCESS) 
+        if (vkCreateDescriptorPool(m_device.GetDevice(), &descriptor_pool_info, nullptr, &m_descriptor_pool) != VK_SUCCESS) 
         {
             throw std::runtime_error("failed to create descriptor pool!");
         }

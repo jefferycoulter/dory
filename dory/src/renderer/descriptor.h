@@ -17,12 +17,29 @@ namespace DORY
 
             class Builder 
             {
+                /**
+                 * @brief nested class to help with creating descriptor pools
+                 */
                 public:
                     Builder(Device &device) 
                     : m_device{device} 
                     {}
 
-                    Builder &AddBinding(uint32_t binding, VkDescriptorType descriptorType, VkShaderStageFlags stageFlags, uint32_t count = 1);
+                    /**
+                     * @brief add a binding to the descriptor set layout
+                     * 
+                     * @param binding binding index
+                     * @param descriptor_type 
+                     * @param stage_flags 
+                     * @param count 
+                     * @return Builder& 
+                     */
+                    Builder &AddBinding(uint32_t binding, VkDescriptorType descriptor_type, VkShaderStageFlags stage_flags, uint32_t count = 1);
+                    
+                    /**
+                     * @brief create the descriptor set layout
+                     * @return std::unique_ptr<DescriptorSetLayout> 
+                     */
                     std::unique_ptr<DescriptorSetLayout> Build() const;
 
                 private:
@@ -32,8 +49,8 @@ namespace DORY
 
             /**
              * @brief Construct a new Descriptor Set Layout object
-             * @param device 
-             * @param bindings 
+             * @param device device to create the descriptor set layout on
+             * @param bindings bindings to create the descriptor set layout with
              */
             DescriptorSetLayout(Device &device, std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> bindings);
             
@@ -42,14 +59,16 @@ namespace DORY
              */
             ~DescriptorSetLayout();
 
-            std::unique_ptr<DescriptorSetLayout> CreateLayout() const;
-
             /**
              * @brief Get the Descriptor Set Layout object
              * @return VkDescriptorSetLayout 
              */
             VkDescriptorSetLayout GetDescriptorSetLayout() const { return m_descriptor_set_layout; }
-
+            
+            /**
+             * @brief get the bindings
+             * @return std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> 
+             */
             std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding>  GetBindings() const { return m_bindings; }
 
         private:
@@ -65,6 +84,9 @@ namespace DORY
     {
         public:
 
+            /**
+             * @brief nested class to help with creating descriptor pools
+             */
             class Builder
             {
                 public:
@@ -98,31 +120,29 @@ namespace DORY
              */
             ~DescriptorPool();
 
-            std::unique_ptr<DescriptorPool> CreatePool() const;
-
             /**
-             * @brief 
-             * @param descriptorSetLayout 
-             * @param descriptor 
+             * @brief allocate space for a descriptor set
+             * @param descriptor_set_layout layout of the descriptor set to allocate
+             * @param descriptor handle to the descriptor set to be allocated
              * @return true 
              * @return false 
              */
-            bool AllocateDescriptor(const VkDescriptorSetLayout descriptorSetLayout, VkDescriptorSet &descriptor) const;
+            bool AllocateDescriptor(const VkDescriptorSetLayout descriptor_set_layout, VkDescriptorSet &descriptor) const;
 
             /**
-             * @brief 
+             * @brief clear the descriptors
              * @param descriptors 
              */
             void FreeDescriptors(std::vector<VkDescriptorSet> &descriptors) const;
 
             /**
-             * @brief 
+             * @brief clear the pool
              */
             void ResetPool();
 
         private:
-            Device &m_device;
-            VkDescriptorPool m_descriptor_pool;
+            Device &m_device; // the device this pool is created on
+            VkDescriptorPool m_descriptor_pool; // the descriptor pool
         
         private:
             friend class DescriptorWriter;
@@ -133,31 +153,31 @@ namespace DORY
         public:
             /**
              * @brief Construct a new Descriptor Writer object
-             * @param set_layout 
-             * @param pool 
+             * @param set_layout descriptor set layout
+             * @param pool descriptor pool
              */
             DescriptorWriter(DescriptorSetLayout &set_layout, DescriptorPool &pool);
 
             /**
-             * @brief 
-             * @param binding 
-             * @param buffer_info 
+             * @brief write data to a buffer
+             * @param binding binding index
+             * @param buffer_info info to be written
              * @return DescriptorWriter& 
              */
             DescriptorWriter &WriteBuffer(uint32_t binding, VkDescriptorBufferInfo *buffer_info);
 
             /**
-             * @brief 
-             * @param binding 
-             * @param image_info 
+             * @brief write an image to a buffer
+             * @param binding binding index
+             * @param image_info info to be written
              * @return DescriptorWriter& 
              */
             DescriptorWriter &WriteImage(uint32_t binding, VkDescriptorImageInfo *image_info);
 
 
             /**
-             * @brief 
-             * @param set 
+             * @brief create the descriptor set
+             * @param set reference to the descriptor set to be created
              * @return true 
              * @return false 
              */
@@ -170,9 +190,9 @@ namespace DORY
             void Overwrite(VkDescriptorSet &set);
 
         private:
-            DescriptorSetLayout &m_set_layout;
-            DescriptorPool &m_pool;
-            std::vector<VkWriteDescriptorSet> m_writes;
+            DescriptorSetLayout &m_set_layout; // descriptor set layout
+            DescriptorPool &m_pool; // descriptor pool
+            std::vector<VkWriteDescriptorSet> m_writes; // writes to be performed
     }; // class DescriptorWriter
 }  // namespace DORY
 

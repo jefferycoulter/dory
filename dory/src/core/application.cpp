@@ -41,7 +41,7 @@ namespace DORY
                                                         sizeof(UniformBufferObject), 
                                                         1,
                                                         VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
-                                                        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+                                                        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
             ubo_buffers[i]->Map();
         }
 
@@ -85,7 +85,7 @@ namespace DORY
                 FrameInfo frame_info{frame_index, frame_time, command_buffer, camera, descriptor_sets[frame_index]};
                 // update the uniform buffer object
                 UniformBufferObject ubo{};
-                ubo.projection = camera.GetView();
+                ubo.projection = camera.GetProjection() * camera.GetView();
                 ubo_buffers[frame_index]->WriteToIndex(&ubo, frame_index);
                 ubo_buffers[frame_index]->Flush();
 
