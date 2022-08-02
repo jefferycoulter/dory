@@ -14,6 +14,22 @@ namespace DORY
     class DescriptorSetLayout : public NoCopy
     {
         public:
+
+            class Builder 
+            {
+                public:
+                    Builder(Device &device) 
+                    : m_device{device} 
+                    {}
+
+                    Builder &AddBinding(uint32_t binding, VkDescriptorType descriptorType, VkShaderStageFlags stageFlags, uint32_t count = 1);
+                    std::unique_ptr<DescriptorSetLayout> Build() const;
+
+                private:
+                    Device &m_device;
+                    std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding> m_bindings{};
+            }; // class Builder
+
             /**
              * @brief Construct a new Descriptor Set Layout object
              * @param device 
@@ -26,11 +42,15 @@ namespace DORY
              */
             ~DescriptorSetLayout();
 
+            std::unique_ptr<DescriptorSetLayout> CreateLayout() const;
+
             /**
              * @brief Get the Descriptor Set Layout object
              * @return VkDescriptorSetLayout 
              */
             VkDescriptorSetLayout GetDescriptorSetLayout() const { return m_descriptor_set_layout; }
+
+            std::unordered_map<uint32_t, VkDescriptorSetLayoutBinding>  GetBindings() const { return m_bindings; }
 
         private:
             Device &m_device;
@@ -44,6 +64,26 @@ namespace DORY
     class DescriptorPool : public NoCopy
     {
         public:
+
+            class Builder
+            {
+                public:
+                    Builder(Device &device) 
+                    : m_device{device} 
+                    {}
+
+                    Builder &AddPoolSize(VkDescriptorType descriptor_type, uint32_t count);
+                    Builder &SetPoolFlags(VkDescriptorPoolCreateFlags flags);
+                    Builder &SetMaxSets(uint32_t count);
+                    std::unique_ptr<DescriptorPool> Build() const;
+
+                private:
+                    Device &m_device;
+                    std::vector<VkDescriptorPoolSize> m_pool_sizes{};
+                    uint32_t m_max_sets = 1000;
+                    VkDescriptorPoolCreateFlags m_pool_flags = 0;
+            }; // class Builder
+
             /**
              * @brief Construct a new Descriptor Pool object
              * @param device 
@@ -57,6 +97,8 @@ namespace DORY
              * @brief Destroy the Descriptor Pool object
              */
             ~DescriptorPool();
+
+            std::unique_ptr<DescriptorPool> CreatePool() const;
 
             /**
              * @brief 

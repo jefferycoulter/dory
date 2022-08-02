@@ -5,6 +5,7 @@
 #include "events/event.h"
 #include "events/window_event.h"
 #include "platform/window.h"
+#include "renderer/descriptor.h"
 #include "renderer/device.h"
 #include "renderer/object.h"
 #include "renderer/renderer.h"
@@ -79,6 +80,7 @@ namespace DORY
             Window m_window{WIDTH, HEIGHT, "Dory"}; // window object containing the application 
             Device m_device{m_window}; // device running the application
             Renderer m_renderer{m_window, m_device}; // renderer for the application
+            std::unique_ptr<DescriptorPool> m_descriptor_pool; // descriptor pool for the application
             std::vector<Object> m_objects; // the application's objects
     }; // class Application
 

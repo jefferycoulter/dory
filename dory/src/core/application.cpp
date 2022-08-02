@@ -20,6 +20,11 @@ namespace DORY
         s_instance = this;
         // set the window event callback to be the application's OnEvent method
         m_window.SetEventCallback([this](Event& event) { this->OnEvent(event); });
+
+        m_descriptor_pool = DescriptorPool::Builder(m_device)
+                            .SetMaxSets(SwapChain::MAX_FRAMES_IN_FLIGHT)
+                            .AddPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, SwapChain::MAX_FRAMES_IN_FLIGHT)
+                            .Build();
         LoadObjects();
     }
     
@@ -40,7 +45,19 @@ namespace DORY
             ubo_buffers[i]->Map();
         }
 
-        RendererSystem renderer_system{m_device, m_renderer.GetSwapChainRenderPass()};
+        auto descriptor_set_layout = DescriptorSetLayout::Builder(m_device)
+                                        .AddBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_VERTEX_BIT)
+                                        .Build();
+        std::vector<VkDescriptorSet> descriptor_sets(SwapChain::MAX_FRAMES_IN_FLIGHT);
+        for (size_t i = 0; i < descriptor_sets.size(); i++)
+        {
+            auto buffer_info = ubo_buffers[i]->DescriptorInfo();
+            DescriptorWriter(*descriptor_set_layout, *m_descriptor_pool)
+                            .WriteBuffer(0, &buffer_info)
+                            .Build(descriptor_sets[i]);
+        }
+
+        RendererSystem renderer_system{m_device, m_renderer.GetSwapChainRenderPass(), descriptor_set_layout->GetDescriptorSetLayout()};
         Camera camera{};
         camera.SetViewTarget(glm::vec3(-1.0f, -2.0f, -2.0f), glm::vec3(0.0f, 0.0f, 2.5f));
         auto viewer = Object::CreateObject(); // this holds the camera
@@ -64,7 +81,8 @@ namespace DORY
             // BeginFrame() returns nullptr if the swap chain is not ready (i.e. the window is being resized, etc.)
             if (auto command_buffer = m_renderer.BeginFrame())
             {
-                uint32_t frame_index = m_renderer.GetCurrentFrameIndex();
+                int frame_index = m_renderer.GetCurrentFrameIndex();
+                FrameInfo frame_info{frame_index, frame_time, command_buffer, camera, descriptor_sets[frame_index]};
                 // update the uniform buffer object
                 UniformBufferObject ubo{};
                 ubo.projection = camera.GetView();
@@ -73,7 +91,7 @@ namespace DORY
 
                 // render the objects
                 m_renderer.BeginSwapChainRenderPass(command_buffer);
-                renderer_system.RenderObjects(command_buffer, m_objects, camera);
+                renderer_system.RenderObjects(frame_info, m_objects);
                 m_renderer.EndSwapChainRenderPass(command_buffer);
                 m_renderer.EndFrame();
             }

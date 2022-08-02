@@ -28,6 +28,23 @@ namespace DORY
         vkDestroyDescriptorSetLayout(m_device.GetDevice(), m_descriptor_set_layout, nullptr);
     }
 
+    DescriptorSetLayout::Builder& DescriptorSetLayout::Builder::AddBinding( uint32_t binding, VkDescriptorType descriptorType, VkShaderStageFlags stageFlags, uint32_t count) 
+    {
+        DASSERT_MSG(m_bindings.count(binding) == 0, "Binding already in use");
+        VkDescriptorSetLayoutBinding layoutBinding{};
+        layoutBinding.binding = binding;
+        layoutBinding.descriptorType = descriptorType;
+        layoutBinding.descriptorCount = count;
+        layoutBinding.stageFlags = stageFlags;
+        m_bindings[binding] = layoutBinding;
+        return *this;
+    }
+
+    std::unique_ptr<DescriptorSetLayout> DescriptorSetLayout::Builder::Build() const
+    {
+        return std::make_unique<DescriptorSetLayout>(m_device, m_bindings);
+    }
+
     DescriptorPool::DescriptorPool(Device &device, uint32_t maxSets, VkDescriptorPoolCreateFlags poolFlags, const std::vector<VkDescriptorPoolSize> &poolSizes)
     : m_device{device} 
     {
@@ -47,6 +64,28 @@ namespace DORY
     DescriptorPool::~DescriptorPool() 
     {
         vkDestroyDescriptorPool(m_device.GetDevice(), m_descriptor_pool, nullptr);
+    }
+
+    DescriptorPool::Builder &DescriptorPool::Builder::AddPoolSize(VkDescriptorType descriptor_type, uint32_t count) 
+    {
+        m_pool_sizes.push_back({descriptor_type, count});
+        return *this;
+    }
+    
+    DescriptorPool::Builder &DescriptorPool::Builder::SetPoolFlags(VkDescriptorPoolCreateFlags flags) 
+    {
+        m_pool_flags = flags;
+        return *this;
+    }
+    DescriptorPool::Builder &DescriptorPool::Builder::SetMaxSets(uint32_t count) 
+    {
+        m_max_sets = count;
+        return *this;
+    } 
+    
+    std::unique_ptr<DescriptorPool> DescriptorPool::Builder::Build() const 
+    {
+        return std::make_unique<DescriptorPool>(m_device, m_max_sets, m_pool_flags, m_pool_sizes);
     }
 
     bool DescriptorPool::AllocateDescriptor(const VkDescriptorSetLayout descriptorSetLayout, VkDescriptorSet &descriptor) const 

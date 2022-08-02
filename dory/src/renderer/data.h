@@ -17,7 +17,7 @@ namespace DORY
 
     struct PushConstantData3D
     {
-        glm::mat4 transform{1.0f};
+        glm::mat4 model_matrix{1.0f};
         glm::mat4 normal_matrix{1.0f};
     };   // struct PushConstantData3D
 

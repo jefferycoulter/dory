@@ -18,6 +18,7 @@ set(RENDERER_HDRS
     data.h
     descriptor.h
     device.h
+    frame_info.h
     model.h
     object.h
     pipeline.h

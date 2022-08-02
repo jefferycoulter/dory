@@ -6,7 +6,7 @@ layout(location = 0) out vec4 FragColor;
 
 layout(push_constant) uniform Push
 {
-    mat4 transform;
+    mat4 model_matrix;
     mat4 normal_matrix;
 } push;
 
