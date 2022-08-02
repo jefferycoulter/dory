@@ -25,10 +25,10 @@ cmake -S $DIR -B $DIR/build \
     -DCMAKE_CXX_COMPILER="/usr/bin/clang++" \
     -DCMAKE_BUILD_TYPE=Debug
 
-# compile on multiple threads
-if [ -z "$MAKEFLAGS" ]
+# tell make to run on multiple threads if possible
+if [[ -z "$MAKEFLAGS" ]]
 then
-      export MAKEFLAGS=-j$(nproc)
+      export MAKEFLAGS=-j$(sysctl -n hw.ncpu)
 fi
 
 # run make
