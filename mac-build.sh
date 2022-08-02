@@ -25,5 +25,11 @@ cmake -S $DIR -B $DIR/build \
     -DCMAKE_CXX_COMPILER="/usr/bin/clang++" \
     -DCMAKE_BUILD_TYPE=Debug
 
+# compile on multiple threads
+if [ -z "$MAKEFLAGS" ]
+then
+      export MAKEFLAGS=-j$(nproc)
+fi
+
 # run make
 cd $DIR/build; VERBOSE=1 make
