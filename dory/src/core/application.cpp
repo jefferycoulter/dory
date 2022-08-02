@@ -86,7 +86,7 @@ namespace DORY
                 // update the uniform buffer object
                 UniformBufferObject ubo{};
                 ubo.projection = camera.GetProjection() * camera.GetView();
-                ubo_buffers[frame_index]->WriteToIndex(&ubo, frame_index);
+                ubo_buffers[frame_index]->WriteToBuffer(&ubo);
                 ubo_buffers[frame_index]->Flush();
 
                 // render the objects
