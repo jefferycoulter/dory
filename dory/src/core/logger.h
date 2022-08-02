@@ -74,7 +74,7 @@ namespace DORY
         #pragma warning(disable:4996)
         #include <windows.h> // WinAPI header for changing color of console text
         template<typename ... Args>
-        static void log(const char* color, const char* priority_name, const char* msg, Args... args)
+        static void log(int color, const char* priority_name, const char* msg, Args... args)
         {
             HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
             SetConsoleTextAttribute(hConsole, (WORD)color);
