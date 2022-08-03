@@ -10,7 +10,11 @@ rem get compiler
 set GLSLC="%VULKAN_DIR%\bin\glslc"
 
 rem compile shader programs
-%GLSLC% %CURRENT_DIR%\assets\shaders\shader.vert -o %CURRENT_DIR%\assets\shaders\shader.vert.spv
-%GLSLC% %CURRENT_DIR%\assets\shaders\shader.frag -o %CURRENT_DIR%\assets\shaders\shader.frag.spv
-%GLSLC% %CURRENT_DIR%\assets\shaders\point_light.vert -o %CURRENT_DIR%\assets\shaders\point_light.vert.spv
-%GLSLC% %CURRENT_DIR%\assets\shaders\point_light.frag -o %CURRENT_DIR%\assets\shaders\point_light.frag.spv
+pushd %CURRENT_DIR%
+cd %CURRENT_DIR%\assets\shaders
+for %%i in (*.vert *.frag) do (
+    echo "Compiling %%i."
+    %GLSLC% %%i -o %%i.spv
+    echo "%%i.spv created."
+)
+popd

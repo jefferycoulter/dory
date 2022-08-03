@@ -8,7 +8,8 @@ VULKAN_DIR=$( cd "$(mdfind kind:folder VulkanSDK)" && cd "$(ls)" && pwd )
 GLSLC=$VULKAN_DIR/macOS/bin/glslc
 
 # compile shader programs
-$GLSLC $DIR/../assets/shaders/shader.vert -o $DIR/../assets/shaders/shader.vert.spv
-$GLSLC $DIR/../assets/shaders/shader.frag -o $DIR/../assets/shaders/shader.frag.spv
-$GLSLC $DIR/../assets/shaders/point_light.vert -o $DIR/../assets/shaders/point_light.vert.spv
-$GLSLC $DIR/../assets/shaders/point_light.frag -o $DIR/../assets/shaders/point_light.frag.spv
+cd $DIR/../assets/shaders
+for FILE in *.{vert,frag}
+    do echo "Compiling $FILE."; $GLSLC $FILE -o $FILE.spv; echo "$FILE.spv created."
+done
+cd $DIR
