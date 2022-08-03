@@ -14,6 +14,8 @@ namespace DORY
     struct PipelineConfigInfo : public NoCopy
     {   
         // set in Pipeline::DefaultConfig()
+        std::vector<VkVertexInputBindingDescription> binding_decriptions{};
+        std::vector<VkVertexInputAttributeDescription> attribute_decriptions{};
         VkPipelineViewportStateCreateInfo _viewport_info;
         VkPipelineInputAssemblyStateCreateInfo _input_assembly_info; // first stage of graphics pipeline
         VkPipelineRasterizationStateCreateInfo _rasterization_info; // next stage after vertex shader

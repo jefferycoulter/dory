@@ -54,8 +54,8 @@ namespace DORY
         shader_stages[1].pSpecializationInfo = nullptr;
 
         // specify how to interpret the vertex buffer data
-        auto binding_description = Model::Vertex::GetBindingDescriptions();
-        auto attribute_description = Model::Vertex::GetAttributeDescriptions();
+        auto& binding_description = info.binding_decriptions;
+        auto& attribute_description = info.attribute_decriptions;
         VkPipelineVertexInputStateCreateInfo vertex_input_info{};
         vertex_input_info.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
         vertex_input_info.vertexAttributeDescriptionCount = static_cast<uint32_t>(attribute_description.size());
@@ -169,5 +169,8 @@ namespace DORY
         info._dynamic_state_info.pDynamicStates = info._dynamic_states.data();
         info._dynamic_state_info.dynamicStateCount = static_cast<uint32_t>(info._dynamic_states.size());
         info._dynamic_state_info.flags = 0;
+
+        info.binding_decriptions = Model::Vertex::GetBindingDescriptions();
+        info.attribute_decriptions = Model::Vertex::GetAttributeDescriptions();
     }
 } // namespace DORY

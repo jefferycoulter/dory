@@ -45,6 +45,8 @@ namespace DORY
 
         PipelineConfigInfo pipeline_config{};
         Pipeline::DefaultConfig(pipeline_config);
+        pipeline_config.binding_decriptions.clear();
+        pipeline_config.attribute_decriptions.clear();
         pipeline_config._render_pass = render_pass;
         pipeline_config._pipeline_layout = m_pipeline_layout;
         m_pipeline = std::make_unique<Pipeline>(m_device, pipeline_config, "assets/shaders/point_light.vert.spv", "assets/shaders/point_light.frag.spv");
