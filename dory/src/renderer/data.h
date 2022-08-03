@@ -24,7 +24,10 @@ namespace DORY
     struct UniformBufferObject
     {
         glm::mat4 projection{1.0f};
-        glm::vec3 light_direction = glm::normalize(glm::vec3(1.0f, 3.0f, -1.0f));
+        glm::mat4 view{1.0f};
+        glm::vec4 ambient_color{1.0f, 1.0f, 1.0f, 0.1f};
+        glm::vec4 light_position{1.0f, 1.0f, 1.0f, -1.0f};
+        glm::vec4 light_color{1.0f};
     }; // struct UBO
 } // namespace DORY
 

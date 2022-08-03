@@ -16,6 +16,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
+#include <unordered_map>
+
 namespace DORY
 {
     /**
@@ -81,7 +83,7 @@ namespace DORY
             Device m_device{m_window}; // device running the application
             Renderer m_renderer{m_window, m_device}; // renderer for the application
             std::unique_ptr<DescriptorPool> m_descriptor_pool{}; // descriptor pool for the application
-            std::vector<Object> m_objects; // the application's objects
+            std::unordered_map<uint32_t, Object> m_objects; // the application's objects
     }; // class Application
 
     /**

@@ -22,6 +22,7 @@ tests/bin
 *.o
 *.slo
 *.lo
+*.spv
 
 # compiled static libaries
 *.a

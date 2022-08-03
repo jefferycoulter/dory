@@ -1,5 +1,5 @@
-#ifndef DORY_RENDERER_SYSTEM_INCL
-#define DORY_RENDERER_SYSTEM_INCL
+#ifndef DORY_POINT_LIGHT_SYSTEM_INCL
+#define DORY_POINT_LIGHT_SYSTEM_INCL
 
 #include "core/core.h"
 #include "renderer/camera.h"
@@ -17,26 +17,26 @@ namespace DORY
 {
     /**
      * @brief class representing a renderer system. this describes the graphics pipeline that an application
-     * will use to render its objects.
+     * will use to render its point lights.
      */
-    class RendererSystem : public NoCopy
+    class PointLightSystem : public NoCopy
     {
         public:
             /**
              * @brief construct a new renderer system on a given device with a given render pass.
              */
-            RendererSystem(Device& device, VkRenderPass render_pass, VkDescriptorSetLayout descriptor_set_layout);
+            PointLightSystem(Device& device, VkRenderPass render_pass, VkDescriptorSetLayout descriptor_set_layout);
 
             /**
              * @brief destroy the renderer system
              */
-            ~RendererSystem();
+            ~PointLightSystem();
 
             /**
-             * @brief render the application's objects
-             * @param command_buffer the
+             * @brief render the application's point lights
+             * @param command_buffer the command buffer to render on
              */
-            void RenderObjects(FrameInfo frame_info);
+            void Render(FrameInfo frame_info);
 
         private: // methods    
             /**
@@ -53,7 +53,7 @@ namespace DORY
             Device& m_device; // the device that the renderer will use
             std::unique_ptr<Pipeline> m_pipeline; // the renderer's graphics pipeline
             VkPipelineLayout m_pipeline_layout; // the layout/specs for the renderer's graphics pipeline
-    }; // class RendererSystem
+    }; // class PointLightSystem
 } // namespace DORY
 
-#endif // DORY_RENDERER_SYSTEM_INCL
+#endif // DORY_POINT_LIGHT_SYSTEM_INCL

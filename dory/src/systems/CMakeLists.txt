@@ -1,9 +1,11 @@
 # specify source and header files
 set(SYSTEMS_SRCS 
+    point_light_system.cpp
     renderer_system.cpp
 )
 
 set(SYSTEMS_HDRS 
+    point_light_system.h
     renderer_system.h
 )
 

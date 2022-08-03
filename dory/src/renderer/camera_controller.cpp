@@ -11,8 +11,8 @@ namespace DORY
         glm::vec3 rotate{0.0f};
         if (Input::IsKeyPressed(key_map.look_up)) { rotate.x -= 1.0f; }
         if (Input::IsKeyPressed(key_map.look_down)) { rotate.x += 1.0f; }
-        if (Input::IsKeyPressed(key_map.look_right)) { rotate.y -= 1.0f; }
-        if (Input::IsKeyPressed(key_map.look_left)) { rotate.y += 1.0f; }
+        if (Input::IsKeyPressed(key_map.look_right)) { rotate.y += 1.0f; }
+        if (Input::IsKeyPressed(key_map.look_left)) { rotate.y -= 1.0f; }
 
         if (glm::dot(rotate, rotate) > std::numeric_limits<float>::epsilon())
         {
@@ -32,10 +32,10 @@ namespace DORY
 
         // get movement input
         glm::vec3 move{0.0f};
-        if (Input::IsKeyPressed(key_map.move_up)) { move += up_dir; }
-        if (Input::IsKeyPressed(key_map.move_down)) { move -= up_dir; }
-        if (Input::IsKeyPressed(key_map.move_left)) { move += right_dir; }
-        if (Input::IsKeyPressed(key_map.move_right)) { move -= right_dir; }
+        if (Input::IsKeyPressed(key_map.move_up)) { move -= up_dir; }
+        if (Input::IsKeyPressed(key_map.move_down)) { move += up_dir; }
+        if (Input::IsKeyPressed(key_map.move_left)) { move -= right_dir; }
+        if (Input::IsKeyPressed(key_map.move_right)) { move += right_dir; }
         if (Input::IsKeyPressed(key_map.move_backward)) { move += forward_dir; }
         if (Input::IsKeyPressed(key_map.move_forward)) { move -= forward_dir; }
         
