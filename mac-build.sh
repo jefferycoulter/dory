@@ -15,7 +15,7 @@ fi
 
 # compile the shaders
 echo "Compiling shaders..."
-scripts/compile-shaders-mac.sh
+source scripts/compile-shaders-mac.sh
 echo "Shaders compiled."
 
 # run cmake
